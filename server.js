@@ -9,9 +9,9 @@ const crypto = require('crypto');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const SECRET = process.env.JWT_SECRET;
-const DB_URL = process.env.DATABASE_URL;
-if (!SECRET || SECRET.length < 16) { console.error('JWT_SECRET مفقود أو قصير (16 حرفاً على الأقل)'); process.exit(1); }
+// إذا لم يُحدَّد JWT_SECRET يُولَّد مفتاح تلقائياً ويُحفظ في قاعدة البيانات
+let SECRET = (process.env.JWT_SECRET || '').trim();
+const DB_URL = (process.env.DATABASE_URL || '').trim();
 if (!DB_URL) { console.error('DATABASE_URL مفقود — اربط قاعدة PostgreSQL بالخدمة'); process.exit(1); }
 
 const noSsl = /localhost|127\.0\.0\.1|\.railway\.internal/.test(DB_URL) || process.env.PGSSL === 'disable';
@@ -39,7 +39,19 @@ async function init() {
     create table if not exists users (
       id text primary key, email text unique not null, password_hash text not null,
       role text not null, manager_id text, name text, token_version int not null default 0,
-      created_at timestamptz not null default now());`);
+      created_at timestamptz not null default now());
+    create table if not exists meta (k text primary key, v text not null);`);
+  if (SECRET.length < 16) {
+    if (SECRET) console.warn('تنبيه: JWT_SECRET أقصر من 16 حرفاً، سيُستخدم مفتاح تلقائي بدلاً منه');
+    const r = await pool.query("select v from meta where k='jwt_secret'");
+    if (r.rows.length) SECRET = r.rows[0].v;
+    else {
+      SECRET = crypto.randomBytes(48).toString('hex');
+      await pool.query("insert into meta (k,v) values ('jwt_secret',$1) on conflict (k) do nothing", [SECRET]);
+      const again = await pool.query("select v from meta where k='jwt_secret'"); SECRET = again.rows[0].v;
+      console.log('أُنشئ مفتاح جلسات تلقائي وحُفظ في قاعدة البيانات');
+    }
+  }
   // حساب الستي ليدر من متغيرات البيئة (يُنشأ أو تُحدَّث كلمة مروره عند كل تشغيل)
   const email = (process.env.LEADER_EMAIL || '').trim().toLowerCase();
   const pass = process.env.LEADER_PASSWORD || '';
