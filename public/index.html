@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d6955">
+<title>ERP صلاح الدين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@500;600;700&display=swap">
+<style>
+/* Layout: sticky top bar with brand + horizontally scrolling tab rail; one content column of panels; every table sits in its own scroll box */
+:root{
+  --bg:#eef3f1; --surface:#ffffff; --surface-2:#e4ece9; --ink:#13211d; --muted:#5a6a65; --line:#d3ddd9;
+  --accent:#0d6955; --accent-2:#0a5546; --accent-soft:#d5ebe4; --accent-ink:#ffffff;
+  --gold:#b87a05; --gold-soft:#faedcf;
+  --good:#1e8a4b; --good-soft:#d9f0e2; --warn:#a86400; --warn-soft:#fbead0; --bad:#c03a2d; --bad-soft:#f8dcd8;
+  --st-reg:#677983; --st-1:#2d6bc0; --st-3:#1e8a4b;
+  --shadow:0 1px 2px rgba(10,40,32,.06),0 4px 14px rgba(10,40,32,.06);
+  --f-display:"Readex Pro","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1412; --surface:#131e1b; --surface-2:#1a2723; --ink:#e4ede9; --muted:#93a59f; --line:#283632;
+  --accent:#3dbd9c; --accent-2:#5fd0b2; --accent-soft:#163a31; --accent-ink:#04211a;
+  --gold:#f0b43c; --gold-soft:#3a2d10;
+  --good:#4cc982; --good-soft:#143524; --warn:#f0a23c; --warn-soft:#3a2810; --bad:#ff7a6b; --bad-soft:#3d1a16;
+  --st-reg:#9aabb4; --st-1:#6aa4f0; --st-3:#4cc982;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1412; --surface:#131e1b; --surface-2:#1a2723; --ink:#e4ede9; --muted:#93a59f; --line:#283632;
+  --accent:#3dbd9c; --accent-2:#5fd0b2; --accent-soft:#163a31; --accent-ink:#04211a;
+  --gold:#f0b43c; --gold-soft:#3a2d10;
+  --good:#4cc982; --good-soft:#143524; --warn:#f0a23c; --warn-soft:#3a2810; --bad:#ff7a6b; --bad-soft:#3d1a16;
+  --st-reg:#9aabb4; --st-1:#6aa4f0; --st-3:#4cc982;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  color-scheme:dark}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.num,.tnum,td,input{font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.25}
+h2{font-size:1.25rem;font-weight:600}
+h3{font-size:1.02rem;font-weight:600}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 0}
+.brand-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mark{width:36px;height:36px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:15px;flex:none}
+.brand{display:flex;flex-direction:column;min-width:0}
+.brand b{font-family:var(--f-display);font-weight:600;font-size:1.05rem}
+.brand small{color:var(--muted);font-size:.8rem}
+.spacer{flex:1}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:600;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.chip.leader{background:var(--accent-soft);color:var(--accent)}
+.chip.mgr{background:var(--gold-soft);color:var(--gold)}
+.chip.r-sam{background:#e3e9fb;color:#3249a8}
+.chip.r-tik{background:#f6e2ef;color:#9a2f72}
+:root[data-theme="dark"] .chip.r-sam{background:#1f2747;color:#9fb2ff}
+:root[data-theme="dark"] .chip.r-tik{background:#3a1a2f;color:#f2a3d4}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip.r-sam{background:#1f2747;color:#9fb2ff}:root:not([data-theme="light"]) .chip.r-tik{background:#3a1a2f;color:#f2a3d4}}
+.viewas{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
+.viewas select{padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface)}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-top:8px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:none;padding:10px 14px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+
+main{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 80px;display:flex;flex-direction:column;gap:18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
+.panel-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.panel-h p{margin:0;color:var(--muted);font-size:.85rem}
+.page-h{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.page-h h1{font-size:1.55rem;font-weight:600}
+.page-h p{margin:2px 0 0;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:.83rem}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:9px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{background:var(--accent-2)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn.ghost{border-color:transparent;background:none}
+.btn.danger{color:var(--bad)}
+.btn.sm{padding:5px 10px;font-size:.82rem;border-radius:7px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.icon-btn{border:1px solid var(--line);background:var(--surface);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:1rem;display:inline-grid;place-items:center}
+
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+@media (max-width:420px){.g3,.g2{grid-template-columns:1fr}}
+
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.kpi .lab{font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:.01em}
+.kpi .val{font-family:var(--f-display);font-size:1.7rem;font-weight:600;line-height:1.1}
+.kpi .val small{font-size:.85rem;color:var(--muted);font-weight:500;font-family:var(--f-body)}
+.kpi.money .val{color:var(--gold)}
+.kpi .sub{font-size:.8rem;color:var(--muted)}
+
+.prog{display:flex;flex-direction:column;gap:5px}
+.prog-h{display:flex;justify-content:space-between;gap:8px;font-size:.82rem}
+.prog-h span:first-child{color:var(--muted);font-weight:600}
+.track{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;position:relative}
+.track i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.track i.good{background:var(--good)}.track i.mid{background:var(--gold)}.track i.low{background:var(--bad)}
+.track.ratio{height:10px;overflow:visible}
+.track.ratio em{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);opacity:.55}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:right;font-weight:600;color:var(--muted);font-size:.78rem;background:var(--surface-2);padding:9px 12px;white-space:nowrap}
+td{padding:9px 12px;border-top:1px solid var(--line);white-space:nowrap;vertical-align:middle}
+tr:hover td{background:color-mix(in srgb,var(--surface-2) 45%,transparent)}
+td.wrap{white-space:normal;min-width:140px}
+.phone{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+
+.st{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;padding:2px 10px;border-radius:99px}
+.st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.st.reg{color:var(--st-reg);background:color-mix(in srgb,var(--st-reg) 14%,transparent)}
+.st.trip1{color:var(--st-1);background:color-mix(in srgb,var(--st-1) 14%,transparent)}
+.st.trip3{color:var(--st-3);background:color-mix(in srgb,var(--st-3) 14%,transparent)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:5px 10px;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;border-inline-start:1px solid var(--line)}
+.seg button:first-child{border-inline-start:0}
+.seg button.on.reg{background:var(--st-reg);color:#fff}
+.seg button.on.trip1{background:var(--st-1);color:#fff}
+.seg button.on.trip3{background:var(--st-3);color:#fff}
+
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fld label{font-size:.76rem;font-weight:600;color:var(--muted)}
+.fld input,.fld select,.fld textarea{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);min-width:0;width:100%}
+.fld textarea{min-height:120px;resize:vertical}
+.fld.grow{flex:1 1 200px}
+.form{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.form .full{grid-column:1/-1}
+@media (max-width:480px){.form{grid-template-columns:1fr}}
+.hint{font-size:.78rem;color:var(--muted)}
+.callout{border-radius:10px;padding:10px 12px;font-size:.86rem}
+.callout.good{background:var(--good-soft);color:var(--good)}
+.callout.warn{background:var(--warn-soft);color:var(--warn)}
+.callout.bad{background:var(--bad-soft);color:var(--bad)}
+.callout.info{background:var(--accent-soft);color:var(--accent)}
+
+/* promoter cards */
+.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pcard-h{display:flex;align-items:flex-start;gap:10px}
+.pcard-h .who{flex:1;min-width:0}
+.pcard-h .who b{font-family:var(--f-display);font-weight:600;font-size:1.05rem;display:block}
+.pcard-h .who span{color:var(--muted);font-size:.8rem}
+.fin{border-top:1px dashed var(--line);padding-top:12px;display:grid;gap:8px}
+.fin-row{display:flex;justify-content:space-between;gap:8px;font-size:.87rem}
+.fin-row span:first-child{color:var(--muted)}
+.fin-total{display:flex;justify-content:space-between;align-items:baseline;background:var(--gold-soft);border-radius:10px;padding:10px 12px}
+.fin-total b{font-family:var(--f-display);font-size:1.35rem;color:var(--gold)}
+.fin-total span{font-weight:600;color:var(--gold)}
+.mode{font-size:.8rem;font-weight:600;border-radius:8px;padding:6px 10px}
+.mode.on{background:var(--good-soft);color:var(--good)}
+.mode.off{background:var(--surface-2);color:var(--muted)}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.counts div{background:var(--surface-2);border-radius:9px;padding:8px 4px}
+.counts b{display:block;font-family:var(--f-display);font-size:1.2rem}
+.counts span{font-size:.72rem;color:var(--muted);font-weight:600}
+
+.weeknav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.weeknav .lbl{font-weight:600;min-width:0}
+.weeknav .lbl small{display:block;color:var(--muted);font-weight:500;font-size:.78rem}
+
+/* manager blocks */
+.mblock{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.mblock-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;background:var(--surface-2)}
+.mblock-h .who{flex:1;min-width:180px}
+.mblock-h .who b{font-family:var(--f-display);font-weight:600;font-size:1.05rem}
+.mblock .tbl-wrap{border:0;border-radius:0}
+.linked{font-size:.8rem;color:var(--muted)}
+.linked b{color:var(--accent)}
+
+/* leaderboard */
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:end}
+.pod{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center;min-width:0}
+.pod .rank{font-family:var(--f-display);font-weight:700;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2)}
+.pod.p1{order:2;padding-block:22px;border-color:var(--gold);background:linear-gradient(var(--gold-soft),var(--surface))}
+.pod.p1 .rank{background:var(--gold);color:#fff}
+.pod.p2{order:1}.pod.p3{order:3}
+.pod b{font-family:var(--f-display);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.pod .big{font-family:var(--f-display);font-size:1.5rem;font-weight:700;color:var(--accent)}
+.rankrow{display:grid;grid-template-columns:34px minmax(0,1.4fr) minmax(0,2fr) auto;gap:12px;align-items:center;padding:10px 4px;border-top:1px solid var(--line)}
+.rankrow:first-child{border-top:0}
+.rankrow .n{font-family:var(--f-display);font-weight:600;color:var(--muted);text-align:center}
+.rankrow .nm b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rankrow .nm span{font-size:.76rem;color:var(--muted)}
+.rankrow .v{font-family:var(--f-display);font-weight:600;min-width:70px;text-align:left}
+@media (max-width:520px){.rankrow{grid-template-columns:28px minmax(0,1fr) auto}.rankrow .barcol{grid-column:2/-1;grid-row:2}}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:99px;font-size:.84rem;font-weight:600;cursor:pointer;color:var(--muted)}
+.pill.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+/* chart */
+.chart svg{width:100%;height:auto;display:block}
+.chart .barf{fill:var(--accent)}
+.chart .bar3{fill:var(--good)}
+.chart .gl{stroke:var(--line)}
+.chart text{fill:var(--muted);font-size:12px;font-family:var(--f-body)}
+.chart .vt{fill:var(--ink);font-weight:600}
+
+/* budget */
+.wk{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.wk:first-child{border-top:0}
+@media (max-width:520px){.wk{grid-template-columns:1fr auto}.wk .track-col{grid-column:1/-1}}
+.tiers{display:flex;gap:8px;flex-wrap:wrap}
+.tier{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface-2);font-size:.85rem}
+.tier b{font-family:var(--f-display);color:var(--gold)}
+
+/* export */
+.sheet-prev{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:10px;overflow:auto;max-height:640px}
+.sheet-prev canvas{width:100%;height:auto;display:block;border-radius:6px;box-shadow:var(--shadow)}
+.checks{display:flex;gap:12px;flex-wrap:wrap}
+.checks label{display:flex;gap:6px;align-items:center;font-size:.88rem;cursor:pointer}
+
+/* empty / onboarding */
+.empty{text-align:center;padding:36px 16px;color:var(--muted)}
+.empty h2{color:var(--ink);margin-bottom:6px}
+.steps{display:grid;gap:10px;max-width:560px;margin:16px auto 0;text-align:right}
+.steps li{background:var(--surface-2);border-radius:10px;padding:10px 14px;list-style:none;display:flex;gap:10px;align-items:baseline}
+.steps li b{font-family:var(--f-display);color:var(--accent)}
+.steps{padding:0}
+
+/* modal + toast */
+.overlay{position:fixed;inset:0;background:rgba(6,18,15,.5);z-index:50;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.dialog{background:var(--surface);border-radius:14px;width:min(620px,100%);max-height:calc(100vh - 40px);overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3);display:flex;flex-direction:column}
+.dialog-h{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:1}
+.dialog-h h2{flex:1;font-size:1.1rem}
+.dialog-b{padding:18px;display:flex;flex-direction:column;gap:14px}
+.dialog-f{display:flex;gap:8px;justify-content:flex-start;padding:14px 18px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--surface)}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:60;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-weight:600;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.toast.bad{background:var(--bad);color:#fff}
+.userhits{display:flex;flex-direction:column;gap:6px}
+.userhit{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface);cursor:pointer;text-align:right}
+.userhit:hover{background:var(--surface-2)}
+.userhit img{width:28px;height:28px;border-radius:50%}
+.loading{padding:40px;text-align:center;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.track i{transition:width .4s ease}}
+.login{max-width:420px;margin:8vh auto 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.login .mark{width:52px;height:52px;font-size:19px}
+.login h1{font-size:1.4rem}
+.uidbox{direction:ltr;font-family:ui-monospace,Menlo,monospace;background:var(--surface-2);padding:10px;border-radius:8px;word-break:break-all;user-select:all;font-size:.85rem}
+</style>
+</head>
+<body>
+
+<div id="app" dir="rtl" lang="ar">
+  <header class="top"><div class="top-in" id="topbar">
+    <div class="brand-row"><div class="mark">بلي</div><div class="brand"><b>ستي ليدر صلاح الدين</b><small>جارٍ التحميل…</small></div></div>
+    <nav class="tabs"></nav>
+  </div></header>
+  <main id="main"><div class="loading">جارٍ تحميل البيانات…</div></main>
+  <div id="modal"></div>
+  <div id="toast" hidden></div>
+</div>
+
+<script>
+/* ===== طبقة الاتصال بالخادم (Railway) ===== */
+const API={
+  async req(method,url,body){
+    const r=await fetch(url,{method,headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,credentials:'same-origin'});
+    let j=null;try{j=await r.json()}catch(e){}
+    if(!r.ok){const e=new Error((j&&j.error)||('HTTP '+r.status));e.status=r.status;e.reason=j&&j.error;
+      e.code=r.status===403?'permission-denied':r.status===401?'unauthenticated':r.status===409?'already-exists':r.status===400?'invalid-argument':r.status===404?'not-found':r.status===429?'too-many':'unavailable';
+      if(r.status===401&&url!=='/api/login'&&url!=='/api/me'&&window.onUnauth)window.onUnauth();throw e}
+    return j},
+  get:u=>API.req('GET',u),post:(u,b)=>API.req('POST',u,b||{}),put:(u,b)=>API.req('PUT',u,b),patch:(u,b)=>API.req('PATCH',u,b),del:u=>API.req('DELETE',u)};
+const genId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+const enc=encodeURIComponent;
+const snapOf=(col,id,data)=>({id,exists:data!=null,data:()=>data==null?undefined:data,ref:new DocRef(col,id)});
+class DocRef{constructor(c,id){this.col=c;this.id=id;this.path=c+'/'+id}
+  url(){return`/api/doc/${enc(this.col)}/${enc(this.id)}`}
+  async get(){const j=await API.get(this.url());return snapOf(this.col,this.id,j.data)}
+  async set(d){await API.put(this.url(),{data:d});LIVE.touch(this.col)}
+  async update(d){await API.patch(this.url(),{data:d});LIVE.touch(this.col)}
+  async delete(){await API.del(this.url());LIVE.touch(this.col)}
+  onSnapshot(n,e){return LIVE.add(this.col,()=>this.get(),n,e)}}
+class Query{constructor(c,w=[],l=0){this.col=c;this.w=w;this.l=l}
+  where(f,op,v){return new Query(this.col,[...this.w,[f,op,v]],this.l)}
+  limit(n){return new Query(this.col,this.w,n)}
+  async get(){const q=new URLSearchParams();if(this.w.length)q.set('where',JSON.stringify(this.w));if(this.l)q.set('limit',this.l);
+    const j=await API.get(`/api/col/${enc(this.col)}?${q}`);const docs=j.docs.map(d=>snapOf(this.col,d.id,d.data));return{docs,size:docs.length,empty:!docs.length}}
+  onSnapshot(n,e){return LIVE.add(this.col,()=>this.get(),n,e)}}
+class ColRef extends Query{doc(id){return new DocRef(this.col,id||genId())}}
+const DB={collection:c=>new ColRef(c),doc:p=>{const[c,id]=p.split('/');return new DocRef(c,id)},
+  batch(){const ops=[];return{update(r,d){ops.push({op:'update',col:r.col,id:r.id,data:d})},set(r,d){ops.push({op:'set',col:r.col,id:r.id,data:d})},delete(r){ops.push({op:'delete',col:r.col,id:r.id})},
+    async commit(){if(!ops.length)return;await API.post('/api/batch',{ops});new Set(ops.map(o=>o.col)).forEach(c=>LIVE.touch(c))}}}};
+// اشتراكات حيّة: الخادم يرسل اسم المجموعة التي تغيّرت فيُعاد جلبها
+const LIVE={subs:new Set(),es:null,timers:{},iv:null,
+  add(col,fetch,next,err){const s={col,fetch,next,err,alive:true,seq:0};this.subs.add(s);this.run(s);return()=>{s.alive=false;this.subs.delete(s)}},
+  async run(s){const my=++s.seq;try{const r=await s.fetch();if(s.alive&&my===s.seq)s.next(r)}catch(e){if(s.alive&&s.err&&my===s.seq)s.err(e)}},
+  touch(col){clearTimeout(this.timers[col]);this.timers[col]=setTimeout(()=>{for(const s of this.subs)if(s.col===col)this.run(s)},120)},
+  all(){for(const s of this.subs)this.run(s)},
+  connect(){if(this.es)return;const es=new EventSource('/api/events');this.es=es;let first=true;
+    es.onmessage=e=>{try{const m=JSON.parse(e.data);if(m.col)this.touch(m.col)}catch(x){}};
+    es.onopen=()=>{if(!first)this.all();first=false};
+    this.iv=setInterval(()=>this.all(),60000);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)this.all()})},
+  close(){if(this.es){this.es.close();this.es=null}clearInterval(this.iv);this.subs.clear()}};
+</script>
+<script>
+document.documentElement.dir='rtl';document.documentElement.lang='ar';
+/* ================= constants ================= */
+const REGIONS=['سامراء','تكريت'];
+const REGION_CLS={'سامراء':'r-sam','تكريت':'r-tik'};
+const STATUS={reg:'تسجيل فقط',trip1:'رحلة واحدة',trip3:'3 رحلات'};
+const STATUS_SHORT={reg:'تسجيل',trip1:'رحلة 1',trip3:'3 رحلات'};
+const DEF={
+  rates:{reg:3000,trip1:3000,trip3:6000,premium:15000,premiumRatio:60},
+  tiers:[{cars:2,amount:10000},{cars:3,amount:18000},{cars:4,amount:28000},{cars:5,amount:40000}],
+  tierBasis:'reg',
+  targets:{daily:2,weekly:12,monthly:50}
+};
+const DAYS=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const MONTHS=['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'];
+
+/* ================= utils ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Math.round(n||0).toLocaleString('en-US');
+const pc=x=>isFinite(x)?Math.round(x):0;
+const pad=n=>String(n).padStart(2,'0');
+const toStr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const toDate=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=toDate(s);d.setDate(d.getDate()+n);return toStr(d)};
+const today=()=>toStr(new Date());
+const weekStart=s=>{const d=toDate(s);d.setDate(d.getDate()-((d.getDay()+1)%7));return toStr(d)}; // السبت
+const weekEnd=s=>addDays(weekStart(s),6);
+const payDay=s=>addDays(weekStart(s),10); // الثلاثاء من الأسبوع التالي
+const monthStart=s=>s.slice(0,8)+'01';
+const monthEnd=s=>{const d=toDate(monthStart(s));d.setMonth(d.getMonth()+1);d.setDate(0);return toStr(d)};
+const addMonths=(s,n)=>{const d=toDate(monthStart(s));d.setMonth(d.getMonth()+n);return toStr(d)};
+const daysBetween=(a,b)=>Math.round((toDate(b)-toDate(a))/864e5)+1;
+const fmtD=s=>{const d=toDate(s);return d.getDate()+'/'+(d.getMonth()+1)};
+const fmtDay=s=>DAYS[toDate(s).getDay()]+' '+fmtD(s);
+const monthName=s=>MONTHS[+s.slice(5,7)-1]+' '+s.slice(0,4);
+const rangeLabel=(a,b)=>a===b?fmtDay(a):fmtDay(a)+' – '+fmtDay(b);
+function normPhone(s){s=String(s||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[^\d+]/g,'');
+  if(s.startsWith('+964'))s='0'+s.slice(4);else if(s.startsWith('00964'))s='0'+s.slice(5);else if(s.startsWith('964'))s='0'+s.slice(3);
+  if(/^7\d{9}$/.test(s))s='0'+s;return s}
+const validPhone=s=>/^07\d{9}$/.test(s);
+const sum=(a,f)=>a.reduce((t,x)=>t+(f?f(x):x),0);
+const byName=(a,b)=>String(a.name||'').localeCompare(String(b.name||''),'ar');
+function periodRange(k,ref=today()){
+  if(k==='today')return[ref,ref];
+  if(k==='week')return[weekStart(ref),weekEnd(ref)];
+  if(k==='lastweek'){const w=addDays(weekStart(ref),-7);return[w,addDays(w,6)]}
+  if(k==='month')return[monthStart(ref),monthEnd(ref)];
+  if(k==='lastmonth'){const m=addMonths(ref,-1);return[m,monthEnd(m)]}
+  return[ref,ref]}
+const PERIODS={week:'هذا الأسبوع',lastweek:'الأسبوع الماضي',month:'هذا الشهر',lastmonth:'الشهر الماضي'};
+
+/* ================= state ================= */
+const T0=today();
+const S={
+  db:null,user:null,dl:null,canEdit:false,uid:null,status:'loading',
+  settings:JSON.parse(JSON.stringify(DEF)),managers:[],promoters:[],captains:[],bonuses:[],budgets:{},
+  loaded:{},hist:{},histPending:{},liveFrom:addMonths(T0,-3),viewAs:'',page:'home',modal:null,
+  ui:{
+    cap:{q:'',status:'',promoter:'',manager:'',region:'',from:monthStart(T0),to:T0},capLimit:100,
+    promWeek:weekStart(T0),promRegion:'',
+    lbPeriod:'week',lbMetric:'regs',
+    budMonth:monthStart(T0),
+    exp:{scope:'all',manager:'',promoter:'',region:'',period:'week',from:weekStart(T0),to:T0},
+    csv:{statuses:['reg','trip1','trip3'],scope:'all',manager:'',promoter:'',region:'',from:monthStart(T0),to:T0,zero:true}
+  }
+};
+try{const p=localStorage.getItem('baly-page');if(p)S.page=p}catch(e){}
+
+/* ================= roles & scope ================= */
+function role(){
+  const p=S.profile;if(!p)return'none';
+  if(p.role==='leader')return'leader';
+  if(p.role==='manager'&&p.managerId){S.myManagerId=p.managerId;return'manager'}
+  return'none'}
+function scopeMgr(){const r=role();if(r==='manager')return S.myManagerId;if(r==='leader')return S.viewAs||null;return'__none__'}
+const canWrite=()=>role()==='leader'&&!S.viewAs;
+const mgrById=id=>S.managers.find(m=>m.id===id);
+const promById=id=>S.promoters.find(p=>p.id===id);
+function visManagers(){const s=scopeMgr();return s?S.managers.filter(m=>m.id===s):S.managers}
+function visPromoters(){const s=scopeMgr();return(s?S.promoters.filter(p=>p.managerId===s):S.promoters)}
+const visPids=()=>new Set(visPromoters().map(p=>p.id));
+function tg(p){const d=S.settings.targets,t=p&&p.targets||{};return{daily:+t.daily||d.daily,weekly:+t.weekly||d.weekly,monthly:+t.monthly||d.monthly}}
+function targetFor(p,from,to){const t=tg(p);if(from===to)return t.daily;if(from===weekStart(from)&&to===addDays(from,6))return t.weekly;if(from===monthStart(from)&&to===monthEnd(from))return t.monthly;return t.daily*daysBetween(from,to)}
+
+/* ================= data access ================= */
+function capsIn(from,to){
+  if(from>=S.liveFrom)return S.captains.filter(c=>c.regDate>=from&&c.regDate<=to);
+  const k=from+'_'+to;if(S.hist[k])return S.hist[k];
+  if(!S.histPending[k]&&S.db){S.histPending[k]=1;
+    capQuery().where('regDate','>=',from).where('regDate','<=',to).get()
+      .then(s=>{S.hist[k]=s.docs.map(d=>({id:d.id,...d.data()}));delete S.histPending[k];render()})
+      .catch(e=>{delete S.histPending[k];toast('تعذر تحميل بيانات الفترة القديمة','bad')})}
+  return null}
+function weekCalc(list){
+  const R=S.settings.rates;const n=list.length;let n1=0,n3=0;
+  for(const c of list){if(c.status==='trip1')n1++;else if(c.status==='trip3')n3++}
+  const ratio=n?n3/n*100:0;const premium=n>0&&ratio>R.premiumRatio;
+  const base=premium?n*R.premium:(n-n1-n3)*R.reg+n1*R.trip1+n3*R.trip3;
+  let need=null;if(!premium&&n>0){for(let k=1;k<=n-n3;k++){if((n3+k)/n*100>R.premiumRatio){need=k;break}}}
+  return{n,n1,n3,ratio,premium,base,need}}
+function weeksForRange(from,to){const a=weekStart(from),b=weekStart(to);if(a===b)return[a];const o=[];for(let w=a;w<=b;w=addDays(w,7))if(w>=from)o.push(w);return o}
+function countsRange(from,to){const caps=capsIn(from,to);if(!caps)return null;const per={};
+  for(const c of caps){const o=per[c.promoterId]||(per[c.promoterId]={n:0,n1:0,n3:0});o.n++;if(c.status==='trip1')o.n1++;else if(c.status==='trip3')o.n3++}return per}
+const agg=(per,pids)=>{const o={n:0,n1:0,n3:0};for(const id of pids){const x=per[id];if(x){o.n+=x.n;o.n1+=x.n1;o.n3+=x.n3}}o.ratio=o.n?o.n3/o.n*100:0;return o};
+function financeRange(pids,from,to){
+  const weeks=weeksForRange(from,to);const caps=capsIn(weeks[0],addDays(weeks[weeks.length-1],6));if(!caps)return null;
+  const idx=new Map();for(const c of caps){const k=c.promoterId+'|'+weekStart(c.regDate);if(!idx.has(k))idx.set(k,[]);idx.get(k).push(c)}
+  const ws=new Set(weeks);const per={};let base=0,bonus=0;
+  for(const pid of pids){let b=0;for(const w of weeks)b+=weekCalc(idx.get(pid+'|'+w)||[]).base;
+    const bo=sum(S.bonuses.filter(x=>x.promoterId===pid&&ws.has(x.weekStart)),x=>+x.amount||0);
+    per[pid]={base:b,bonus:bo,total:b+bo};base+=b;bonus+=bo}
+  return{base,bonus,total:base+bonus,per,weeks}}
+function budgetMonth(m){const b=S.budgets[m.slice(0,7)]||{};const used=sum(S.bonuses.filter(x=>x.month===m.slice(0,7)),x=>+x.amount||0);const total=+b.total||0;return{total,alloc:b.alloc||{},used,left:total-used}}
+function monthWeeks(m){const o=[];for(let w=weekStart(monthStart(m));w<=monthEnd(m);w=addDays(w,7))o.push(w);return o}
+function bestTier(cars){let t=null;for(const x of [...S.settings.tiers].sort((a,b)=>a.cars-b.cars))if(cars>=x.cars)t=x;return t}
+
+/* ================= writes ================= */
+async function W(fn,ok){try{await fn();S.hist={};if(ok)toast(ok);scheduleBoards();return true}catch(e){console.error(e);
+  const c=e&&e.code;toast(c==='permission-denied'?'لا تملك صلاحية التعديل على هذه البيانات':c==='not-found'?'السجل غير موجود، ربما حُذف':'تعذر الحفظ، تحقق من الإنترنت وحاول مرة أخرى','bad');return false}}
+const col=n=>S.db.collection(n);
+// المدير يقرأ كباتن فريقه فقط (قواعد الأمان تفرض ذلك أيضاً)
+function capQuery(){const q=col('captains');return role()==='manager'?q.where('managerId','==',S.myManagerId):q}
+const mgrOfProm=pid=>promById(pid)?.managerId||'';
+
+/* لوحة المتصدرين المشتركة: يحسبها الستي ليدر وتُقرأ من المدراء دون كشف بيانات الفرق الأخرى */
+let boardsT;function scheduleBoards(){if(role()!=='leader')return;clearTimeout(boardsT);boardsT=setTimeout(publishBoards,2500)}
+async function publishBoards(){if(role()!=='leader')return;const out={};
+  for(const k of Object.keys(PERIODS)){const d=computeBoard(k);if(!d)return scheduleBoards();out[k]={from:d.from,to:d.to,rows:d.rows.map(r=>({pid:r.p.id,n:r.n,n3:r.n3,earn:r.earn,t:r.t}))}}
+  try{await S.db.doc('boards/current').set({periods:out,updatedAt:new Date().toISOString(),week:weekStart(today())})}catch(e){console.error('boards',e)}}
+
+/* ================= render core ================= */
+let rq=0;function render(){if(rq)return;rq=requestAnimationFrame(()=>{rq=0;doRender()})}
+function doRender(){
+  const ae=document.activeElement;const fid=ae&&ae.id&&$('#main').contains(ae)?ae.id:null;let sel=null;try{sel=fid?[ae.selectionStart,ae.selectionEnd]:null}catch(e){}
+  renderTop();
+  const m=$('#main');
+  if(S.status==='login'){m.innerHTML=loginView();return}
+  if(S.status==='loading'){m.innerHTML=`<div class="loading">جارٍ التحميل…</div>`;return}
+  if(!S.loaded.managers||!S.loaded.promoters||!S.loaded.captains||!S.loaded.settings){m.innerHTML=`<div class="loading">جارٍ تحميل البيانات…</div>`;return}
+  const r=role();
+  if(r==='none'){m.innerHTML=`<div class="login"><h1>حسابك غير مرتبط بفريق</h1><p class="muted" style="margin:0">اطلب من الستي ليدر إنشاء حساب دخول لك من صفحة «الفريق».</p><button class="btn" data-act="logout">تسجيل الخروج</button></div>`;return}
+  const pages=navPages();if(!pages.find(p=>p[0]===S.page))S.page='home';
+  const fn={home:pageHome,captains:pageCaptains,promoters:pagePromoters,team:pageTeam,budget:pageBudget,board:pageBoard,export:pageExport,settings:pageSettings}[S.page];
+  m.innerHTML=fn();
+  if(fid){const el=document.getElementById(fid);if(el){el.focus();try{if(sel)el.setSelectionRange(sel[0],sel[1])}catch(e){}}}
+  afterRender()}
+function navPages(){const r=role();const p=[['home','الرئيسية'],['captains','الكباتن'],['promoters','المروجون'],['team','الفريق']];
+  if(r==='leader'&&!S.viewAs)p.push(['budget','الميزانية والعروض']);p.push(['board','المتصدرون'],['export','التصدير']);if(r==='leader'&&!S.viewAs)p.push(['settings','الإعدادات']);return p}
+function renderTop(){
+  const r=S.status!=='ok'||!S.loaded.managers?'':role();
+  const roleChip=r==='leader'?(S.viewAs?`<span class="chip mgr">معاينة: ${esc(mgrById(S.viewAs)?.name||'')}</span>`:`<span class="chip leader">ستي ليدر · صلاحيات كاملة</span>`):r==='manager'?`<span class="chip mgr">مدير مبيعات · ${esc(mgrById(S.myManagerId)?.name||'')}</span>`:'';
+  const ws=weekStart(T0);
+  const va=r==='leader'&&S.managers.length?`<label class="viewas" for="viewAs">عرض كـ<select id="viewAs" data-act-change="viewAs"><option value="">الستي ليدر (الكل)</option>${S.managers.map(m=>`<option value="${m.id}" ${S.viewAs===m.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select></label>`:'';
+  $('#topbar').innerHTML=`<div class="brand-row"><div class="mark">بلي</div><div class="brand"><b>ستي ليدر صلاح الدين</b><small>أسبوع ${fmtD(ws)}–${fmtD(addDays(ws,6))} · الاستلام ${fmtDay(payDay(ws))}</small></div><div class="spacer"></div>${roleChip}${va}${S.status==='ok'?`<button class="btn sm ghost" data-act="myPw">كلمة المرور</button><button class="btn sm ghost" data-act="logout">خروج</button>`:''}</div>
+  <nav class="tabs" aria-label="الأقسام">${r?navPages().map(([k,l])=>`<button class="tab ${S.page===k?'on':''}" data-act="go" data-p="${k}">${l}</button>`).join(''):''}</nav>`}
+function afterRender(){
+  if(S.page==='export')drawPreview()}
+function loginView(){return`<form class="login" id="loginForm" novalidate><div class="mark">بلي</div><div><h1>ستي ليدر صلاح الدين</h1><p class="muted" style="margin:4px 0 0">سجّل الدخول بحساب الستي ليدر أو مدير المبيعات</p></div>
+  <div class="fld"><label for="lg_e">البريد الإلكتروني</label><input id="lg_e" name="email" type="email" dir="ltr" autocomplete="username" required></div>
+  <div class="fld"><label for="lg_p">كلمة المرور</label><input id="lg_p" name="password" type="password" dir="ltr" autocomplete="current-password" required></div>
+  <div class="callout bad" id="lg_err" hidden></div><button class="btn pri" type="submit">دخول</button>
+  <button class="btn ghost sm" type="button" data-act="resetPw">نسيت كلمة المرور؟</button></form>`}
+
+/* ================= components ================= */
+const stChip=s=>`<span class="st ${s}">${STATUS[s]||s}</span>`;
+const regChip=r=>r?`<span class="chip ${REGION_CLS[r]||''}">${esc(r)}</span>`:'';
+function prog(label,v,t){const p=t?v/t*100:0;const c=p>=100?'good':p>=60?'mid':'low';
+  return`<div class="prog"><div class="prog-h"><span>${label}</span><span class="num">${v} / ${t} · <b>${pc(p)}%</b></span></div><div class="track"><i class="${c}" style="width:${Math.min(100,p)}%"></i></div></div>`}
+function ratioBar(r){const R=S.settings.rates.premiumRatio;return`<div class="track ratio" title="خط ${R}%"><i class="${r>R?'good':'mid'}" style="width:${Math.min(100,r)}%"></i><em style="inset-inline-start:${R}%"></em></div>`}
+const kpi=(lab,val,sub,cls='')=>`<div class="kpi ${cls}"><span class="lab">${lab}</span><span class="val num">${val}</span>${sub?`<span class="sub">${sub}</span>`:''}</div>`;
+function promOptions(sel,withAll,allLabel='كل المروجين'){
+  const ms=visManagers();let h=withAll?`<option value="">${allLabel}</option>`:'';
+  for(const m of ms){const ps=S.promoters.filter(p=>p.managerId===m.id).sort(byName);if(!ps.length)continue;
+    h+=`<optgroup label="${esc(m.name)}">${ps.map(p=>`<option value="${p.id}" ${sel===p.id?'selected':''}>${esc(p.name)} · ${esc(p.region||'')}</option>`).join('')}</optgroup>`}
+  return h}
+const mgrOptions=(sel,withAll,allLabel='كل المدراء')=>(withAll?`<option value="">${allLabel}</option>`:'')+visManagers().map(m=>`<option value="${m.id}" ${sel===m.id?'selected':''}>${esc(m.name)}</option>`).join('');
+const regOptions=(sel,withAll)=>(withAll?`<option value="">كل المناطق</option>`:'')+REGIONS.map(r=>`<option ${sel===r?'selected':''}>${r}</option>`).join('');
+const loadingBox=()=>`<div class="loading">جارٍ تحميل بيانات الفترة…</div>`;
+
+/* ================= HOME ================= */
+function onboarding(){
+  const lead=canWrite();
+  return`<div class="panel empty"><h2>ابدأ ببناء فريق صلاح الدين</h2><p>لا يوجد مدراء مبيعات أو مروجون بعد.</p>
+  <ol class="steps"><li><b>1</b><span>أضف مدراء المبيعات من صفحة «الفريق».</span></li><li><b>2</b><span>أضف المروجين تحت كل مدير وحدد المنطقة (سامراء أو تكريت).</span></li><li><b>3</b><span>راجع التارگت ونسب الحساب من «الإعدادات»، ثم سجّل الكباتن.</span></li></ol>
+  ${lead?`<div style="display:flex;gap:8px;justify-content:center;margin-top:18px;flex-wrap:wrap"><button class="btn pri" data-act="go" data-p="team">الذهاب إلى الفريق</button><button class="btn" data-act="demoLoad">تحميل بيانات تجريبية</button></div>`:''}</div>`}
+function pageHome(){
+  const P=visPromoters();if(!S.managers.length&&!P.length)return onboarding();
+  const t=T0,ws=weekStart(t),we=addDays(ws,6),ms=monthStart(t),me=monthEnd(t);
+  const pids=P.map(p=>p.id);
+  const cD=countsRange(t,t),cW=countsRange(ws,we),cM=countsRange(ms,me);
+  const d=agg(cD,pids),w=agg(cW,pids),mo=agg(cM,pids);
+  const tD=sum(P,p=>tg(p).daily),tW=sum(P,p=>tg(p).weekly),tM=sum(P,p=>tg(p).monthly);
+  const fin=financeRange(pids,ws,we);
+  const bud=budgetMonth(ms);
+  const scopeName=scopeMgr()?'فريق '+esc(mgrById(scopeMgr())?.name||''):'كل الفرق';
+  let h=`<div class="page-h"><div><h1>نظرة عامة</h1><p>${scopeName} · ${monthName(ms)}</p></div></div>`;
+  h+=`<div class="grid g4">
+    <div class="kpi">${prog('تارگت اليوم',d.n,tD)}<span class="sub">${fmtDay(t)}</span></div>
+    <div class="kpi">${prog('تارگت الأسبوع',w.n,tW)}<span class="sub">${fmtD(ws)} – ${fmtD(we)}</span></div>
+    <div class="kpi">${prog('تارگت الشهر',mo.n,tM)}<span class="sub">${monthName(ms)}</span></div>
+    <div class="kpi"><span class="lab">نسبة 3 رحلات هذا الأسبوع</span><span class="val num">${pc(w.ratio)}%</span>${ratioBar(w.ratio)}<span class="sub">${w.n3} من ${w.n} سيارة · خط التفعيل ${S.settings.rates.premiumRatio}%</span></div>
+  </div><div class="grid g4">
+    ${kpi('مستحقات المروجين هذا الأسبوع',fin?money(fin.total)+' <small>د.ع</small>':'…',fin?`تسجيل ${money(fin.base)} + عروض ${money(fin.bonus)} · الاستلام ${fmtDay(payDay(ws))}`:'','money')}
+    ${kpi('خرج برحلة واحدة',w.n1,'هذا الأسبوع')}
+    ${kpi('تسجيل فقط',w.n-w.n1-w.n3,'بانتظار الرحلات')}
+    ${canWrite()?kpi('المتبقي من ميزانية الشهر',money(bud.left)+' <small>د.ع</small>',`من ${money(bud.total)} · صُرف ${money(bud.used)}`,'money'):kpi('المروجون',P.length,`${visManagers().length} مدير مبيعات`)}
+  </div>`;
+  // regions + chart
+  const regRows=REGIONS.map(r=>{const ids=P.filter(p=>p.region===r).map(p=>p.id);const a=agg(cW,ids),am=agg(cM,ids);return`<tr><td>${regChip(r)}</td><td>${ids.length}</td><td>${a.n}</td><td>${a.n3}</td><td>${pc(a.ratio)}%</td><td>${am.n}</td></tr>`}).join('');
+  h+=`<div class="grid g2"><section class="panel"><div class="panel-h"><h2>المنطقتان هذا الأسبوع</h2></div><div class="tbl-wrap"><table><thead><tr><th>المنطقة</th><th>مروجون</th><th>تسجيل الأسبوع</th><th>3 رحلات</th><th>النسبة</th><th>تسجيل الشهر</th></tr></thead><tbody>${regRows}</tbody></table></div></section>
+  <section class="panel chart"><div class="panel-h"><h2>آخر 7 أيام</h2><p>التسجيلات، والأخضر منها خرج بـ3 رحلات</p></div>${last7Chart(pids)}</section></div>`;
+  // managers table
+  const mrows=visManagers().map(m=>{const ids=S.promoters.filter(p=>p.managerId===m.id);const a=agg(cW,ids.map(p=>p.id));const tw=sum(ids,p=>tg(p).weekly);const f=fin?sum(ids,p=>fin.per[p.id]?.total||0):0;
+    return`<tr><td><b>${esc(m.name)}</b></td><td>${ids.length}</td><td>${a.n} / ${tw}</td><td style="min-width:140px">${prog('',a.n,tw)}</td><td>${a.n3} (${pc(a.ratio)}%)</td><td class="num">${money(f)}</td></tr>`}).join('');
+  h+=`<section class="panel"><div class="panel-h"><h2>مدراء المبيعات هذا الأسبوع</h2></div><div class="tbl-wrap"><table><thead><tr><th>المدير</th><th>المروجون</th><th>تسجيل / تارگت</th><th>التحقيق</th><th>3 رحلات</th><th>مستحقات الفريق</th></tr></thead><tbody>${mrows||`<tr><td colspan="6" class="muted">لا يوجد مدراء</td></tr>`}</tbody></table></div></section>`;
+  return h}
+function last7Chart(pids){
+  const days=[];for(let i=6;i>=0;i--)days.push(addDays(T0,-i));
+  const caps=capsIn(days[0],T0)||[];const set=new Set(pids);
+  const vals=days.map(d=>{const l=caps.filter(c=>c.regDate===d&&set.has(c.promoterId));return{n:l.length,n3:l.filter(c=>c.status==='trip3').length}});
+  const max=Math.max(4,...vals.map(v=>v.n));const step=Math.ceil(max/4);const top=step*4;
+  const W=700,H=200,L=10,R=40,Tp=20,B=34,cw=(W-L-R)/7,bw=cw*.52;
+  let g='';for(let i=0;i<=4;i++){const y=Tp+(H-Tp-B)*(1-i/4);g+=`<line class="gl" x1="${L}" x2="${W-R}" y1="${y}" y2="${y}"/><text x="${W-R+8}" y="${y+4}">${step*i}</text>`}
+  let b='';vals.forEach((v,i)=>{const x=W-R-(i+1)*cw+(cw-bw)/2;const hgt=(H-Tp-B)*v.n/top,h3=(H-Tp-B)*v.n3/top;const y=H-B-hgt;
+    b+=`<rect class="barf" x="${x}" y="${y}" width="${bw}" height="${hgt}" rx="4" opacity=".35"/><rect class="bar3" x="${x}" y="${H-B-h3}" width="${bw}" height="${h3}" rx="4"/>`;
+    if(v.n)b+=`<text class="vt" x="${x+bw/2}" y="${y-6}" text-anchor="middle">${v.n}</text>`;
+    b+=`<text x="${x+bw/2}" y="${H-12}" text-anchor="middle">${DAYS[toDate(days[i]).getDay()].replace('ال','')} ${fmtD(days[i])}</text>`});
+  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="تسجيلات آخر 7 أيام">${g}${b}</svg>`}
+
+/* ================= CAPTAINS ================= */
+function filteredCaps(){
+  const f=S.ui.cap;const caps=capsIn(f.from,f.to);if(!caps)return null;const vis=visPids();const q=f.q.trim().toLowerCase();const qp=normPhone(f.q);
+  return caps.filter(c=>{if(!vis.has(c.promoterId))return false;const p=promById(c.promoterId);
+    if(f.status&&c.status!==f.status)return false;if(f.promoter&&c.promoterId!==f.promoter)return false;
+    if(f.manager&&p?.managerId!==f.manager)return false;if(f.region&&p?.region!==f.region)return false;
+    if(q&&!(String(c.name||'').toLowerCase().includes(q)||(qp&&String(c.phone||'').includes(qp))))return false;return true})
+    .sort((a,b)=>b.regDate.localeCompare(a.regDate)||String(b.createdAt||'').localeCompare(String(a.createdAt||'')))}
+function capRow(c,lead){
+  const p=promById(c.promoterId),m=p&&mgrById(p.managerId);
+  const st=lead?`<div class="seg" role="group" aria-label="الحالة">${['reg','trip1','trip3'].map(s=>`<button class="${s} ${c.status===s?'on':''}" data-act="setStatus" data-id="${c.id}" data-st="${s}">${STATUS_SHORT[s]}</button>`).join('')}</div>`:stChip(c.status);
+  return`<tr><td><b>${esc(c.name)}</b>${c.notes?`<div class="hint">${esc(c.notes)}</div>`:''}</td><td><span class="phone">${esc(c.phone)}</span></td><td>${esc(p?.name||'—')}</td><td>${esc(m?.name||'—')}</td><td>${regChip(p?.region)}</td><td>${fmtDay(c.regDate)}</td><td>${st}</td>${lead?`<td><button class="btn sm ghost" data-act="editCap" data-id="${c.id}">تعديل</button></td>`:''}</tr>`}
+function pageCaptains(){
+  const f=S.ui.cap,lead=canWrite();const list=filteredCaps();
+  let h=`<div class="page-h"><div><h1>الكباتن</h1><p>كل حالة تُحسب للمروج تلقائياً في أسبوع التسجيل</p></div><div class="spacer"></div>${lead?`<button class="btn" data-act="bulkCap">إضافة مجموعة</button><button class="btn pri" data-act="newCap">+ كابتن جديد</button>`:''}</div>`;
+  h+=`<section class="panel"><div class="filters">
+    <div class="fld grow"><label for="cq">بحث بالاسم أو الهاتف</label><input id="cq" data-bind="cap.q" value="${esc(f.q)}" placeholder="مثال: 0770…"></div>
+    <div class="fld"><label for="cst">الحالة</label><select id="cst" data-bind="cap.status"><option value="">كل الحالات</option>${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${f.status===k?'selected':''}>${v}</option>`).join('')}</select></div>
+    ${scopeMgr()?'':`<div class="fld"><label for="cmg">المدير</label><select id="cmg" data-bind="cap.manager">${mgrOptions(f.manager,true)}</select></div>`}
+    <div class="fld"><label for="cpr">المروج</label><select id="cpr" data-bind="cap.promoter">${promOptions(f.promoter,true)}</select></div>
+    <div class="fld"><label for="crg">المنطقة</label><select id="crg" data-bind="cap.region">${regOptions(f.region,true)}</select></div>
+    <div class="fld"><label for="cfr">من</label><input type="date" id="cfr" data-bind="cap.from" value="${f.from}"></div>
+    <div class="fld"><label for="cto">إلى</label><input type="date" id="cto" data-bind="cap.to" value="${f.to}"></div>
+  </div></section>`;
+  if(!list)return h+loadingBox();
+  const cnt={reg:0,trip1:0,trip3:0};list.forEach(c=>cnt[c.status]=(cnt[c.status]||0)+1);
+  h+=`<div class="pills"><span class="chip">${list.length} كابتن</span><span class="st reg">${cnt.reg} تسجيل فقط</span><span class="st trip1">${cnt.trip1} رحلة واحدة</span><span class="st trip3">${cnt.trip3} ثلاث رحلات</span></div>`;
+  if(!list.length)return h+`<div class="panel empty"><h2>لا يوجد كباتن ضمن هذا الفلتر</h2><p>غيّر الفترة أو الفلاتر${lead?'، أو أضف كابتن جديد.':'.'}</p></div>`;
+  const shown=list.slice(0,S.ui.capLimit);
+  h+=`<div class="tbl-wrap"><table><thead><tr><th>الكابتن</th><th>الهاتف</th><th>المروج</th><th>المدير</th><th>المنطقة</th><th>تاريخ التسجيل</th><th>الحالة</th>${lead?'<th></th>':''}</tr></thead><tbody>${shown.map(c=>capRow(c,lead)).join('')}</tbody></table></div>`;
+  if(list.length>shown.length)h+=`<div style="text-align:center"><button class="btn" data-act="moreCaps">عرض ${Math.min(100,list.length-shown.length)} إضافية (${list.length-shown.length} متبقٍ)</button></div>`;
+  return h}
+
+/* ================= PROMOTERS ================= */
+function pagePromoters(){
+  const ws=S.ui.promWeek,we=addDays(ws,6);let P=visPromoters().slice().sort(byName);if(S.ui.promRegion)P=P.filter(p=>p.region===S.ui.promRegion);
+  const isCur=ws===weekStart(T0);
+  let h=`<div class="page-h"><div><h1>المروجون</h1><p>نسبة التحقيق والملخص المالي لكل مروج</p></div><div class="spacer"></div>
+  <div class="weeknav"><button class="icon-btn" data-act="wk" data-d="-7" aria-label="الأسبوع السابق">›</button><div class="lbl">${fmtDay(ws)} – ${fmtDay(we)}<small>الاستلام ${fmtDay(payDay(ws))}${isCur?' · الأسبوع الحالي':''}</small></div><button class="icon-btn" data-act="wk" data-d="7" aria-label="الأسبوع التالي">‹</button>${isCur?'':`<button class="btn sm" data-act="wkNow">الحالي</button>`}</div>
+  <div class="fld"><label for="prg">المنطقة</label><select id="prg" data-bind="promRegion">${regOptions(S.ui.promRegion,true)}</select></div></div>`;
+  if(!P.length)return h+`<div class="panel empty"><h2>لا يوجد مروجون</h2><p>أضف المروجين من صفحة «الفريق».</p></div>`;
+  const ms=monthStart(ws),me=monthEnd(ms);
+  const caps=capsIn(ws<ms?ws:ms,we>me?we:me);const cD=countsRange(T0,T0);
+  if(!caps||!cD)return h+loadingBox();
+  const cM=countsRange(ms,me);const R=S.settings.rates;
+  const pids=P.map(p=>p.id);const fin=financeRange(pids,ws,we);
+  const wk=caps.filter(c=>c.regDate>=ws&&c.regDate<=we);
+  const tot=agg(countsRange(ws,we),pids);
+  h+=`<div class="grid g4">${kpi('تسجيلات الأسبوع',tot.n,`${tot.n3} بـ3 رحلات · ${pc(tot.ratio)}%`)}${kpi('أرباح التسجيل',money(fin.base)+' <small>د.ع</small>','حسب حالة كل سيارة','money')}${kpi('عروض الستي ليدر',money(fin.bonus)+' <small>د.ع</small>','مثبتة لهذا الأسبوع','money')}${kpi('إجمالي المستحق',money(fin.total)+' <small>د.ع</small>','يُستلم '+fmtDay(payDay(ws)),'money')}</div>`;
+  h+=`<div class="grid g3">`;
+  for(const p of P){
+    const l=wk.filter(c=>c.promoterId===p.id);const wc=weekCalc(l);const t=tg(p);const f=fin.per[p.id];const m=mgrById(p.managerId);
+    const basis=S.settings.tierBasis==='trip3'?wc.n3:wc.n;const bt=bestTier(basis);const next=[...S.settings.tiers].sort((a,b)=>a.cars-b.cars).find(x=>x.cars>basis);
+    const mode=wc.premium?`<div class="mode on">نسبة 3 رحلات ${pc(wc.ratio)}% فوق ${R.premiumRatio}% · كل سيارة ${money(R.premium)} د.ع</div>`:wc.n?`<div class="mode off">${wc.need?`يحتاج ${wc.need} سيارة أخرى بـ3 رحلات لتفعيل ${money(R.premium)} للسيارة`:'التسعير العادي'}</div>`:`<div class="mode off">لا تسجيلات هذا الأسبوع</div>`;
+    h+=`<article class="pcard"><div class="pcard-h"><div class="who"><b>${esc(p.name)}</b><span>مدير المبيعات: ${esc(m?.name||'—')}</span></div>${regChip(p.region)}</div>
+    <div class="grid" style="gap:10px">${prog('اليوم',cD[p.id]?.n||0,t.daily)}${prog('الأسبوع',wc.n,t.weekly)}${prog(monthName(ms),cM[p.id]?.n||0,t.monthly)}</div>
+    <div class="counts"><div><b>${wc.n-wc.n1-wc.n3}</b><span>تسجيل فقط</span></div><div><b>${wc.n1}</b><span>رحلة واحدة</span></div><div><b>${wc.n3}</b><span>3 رحلات</span></div></div>
+    <div class="prog"><div class="prog-h"><span>نسبة 3 رحلات</span><span class="num"><b>${pc(wc.ratio)}%</b></span></div>${ratioBar(wc.ratio)}</div>${mode}
+    <div class="fin"><div class="fin-row"><span>أرباح التسجيل</span><span class="num">${money(f?.base)} د.ع</span></div>
+    <div class="fin-row"><span>عروض الستي ليدر</span><span class="num">${money(f?.bonus)} د.ع</span></div>
+    ${bt||next?`<div class="fin-row"><span>شريحة العرض</span><span class="small">${bt?`مؤهل لـ ${bt.cars} سيارات (${money(bt.amount)})`:''}${bt&&next?' · ':''}${next?`${next.cars-basis} للشريحة التالية`:''}</span></div>`:''}
+    <div class="fin-total"><span>المستحق · ${fmtDay(payDay(ws))}</span><b class="num">${money(f?.total)}</b></div></div>
+    <button class="btn sm" data-act="promDetail" data-id="${p.id}">كباتن الأسبوع (${wc.n})</button></article>`}
+  return h+`</div>`}
+function promDetail(pid){
+  const p=promById(pid);const ws=S.ui.promWeek;const l=(capsIn(ws,addDays(ws,6))||[]).filter(c=>c.promoterId===pid).sort((a,b)=>a.regDate.localeCompare(b.regDate));
+  const lead=canWrite();const bon=S.bonuses.filter(b=>b.promoterId===pid&&b.weekStart===ws);
+  openModal({title:`${p.name} · ${fmtD(ws)}–${fmtD(addDays(ws,6))}`,wide:true,noSubmit:true,live:true,body:()=>{
+    const ll=(capsIn(ws,addDays(ws,6))||[]).filter(c=>c.promoterId===pid).sort((a,b)=>a.regDate.localeCompare(b.regDate));const wc=weekCalc(ll);
+    return`<div class="pills"><span class="chip">${wc.n} سيارة</span><span class="chip">${pc(wc.ratio)}% بـ3 رحلات</span><span class="chip">أرباح التسجيل ${money(wc.base)}</span></div>
+    ${ll.length?`<div class="tbl-wrap"><table><thead><tr><th>الكابتن</th><th>الهاتف</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>${ll.map(c=>`<tr><td>${esc(c.name)}</td><td><span class="phone">${esc(c.phone)}</span></td><td>${fmtDay(c.regDate)}</td><td>${lead?`<div class="seg">${['reg','trip1','trip3'].map(s=>`<button class="${s} ${c.status===s?'on':''}" data-act="setStatus" data-id="${c.id}" data-st="${s}">${STATUS_SHORT[s]}</button>`).join('')}</div>`:stChip(c.status)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">لا تسجيلات في هذا الأسبوع.</p>'}
+    ${bon.length?`<h3>العروض المثبتة</h3>${bon.map(b=>`<div class="fin-row"><span>${b.cars} سيارات · ${rangeLabel(b.from,b.to)}</span><span class="num">${money(b.amount)} د.ع</span></div>`).join('')}`:''}`}})}
+
+/* ================= TEAM ================= */
+function pageTeam(){
+  const lead=canWrite();const ms=visManagers().slice().sort(byName);
+  const ws=weekStart(T0);const cW=countsRange(ws,addDays(ws,6))||{};
+  let h=`<div class="page-h"><div><h1>الفريق</h1><p>مدراء المبيعات والمروجون التابعون لكل منهم</p></div><div class="spacer"></div>${lead?`<button class="btn" data-act="newProm">+ مروج</button><button class="btn pri" data-act="newMgr">+ مدير مبيعات</button>`:''}</div>`;
+  if(lead)h+=`<div class="callout info">لإعطاء مدير مبيعات صلاحية الاطلاع: اضغط «إنشاء حساب دخول» بجانب اسمه وأرسل له البريد وكلمة المرور. سيرى فريقه فقط ويصدّر قوائم فريقه فقط.</div>`;
+  if(!ms.length)return h+`<div class="panel empty"><h2>لا يوجد مدراء مبيعات بعد</h2><p>${lead?'ابدأ بإضافة أول مدير مبيعات، ثم أضف المروجين تحته.':'لم تتم إضافة فريقك بعد.'}</p>${lead?`<button class="btn pri" data-act="newMgr" style="margin-top:12px">+ مدير مبيعات</button>`:''}</div>`;
+  for(const m of ms){const ps=S.promoters.filter(p=>p.managerId===m.id).sort(byName);
+    h+=`<section class="mblock"><div class="mblock-h"><div class="who"><b>${esc(m.name)}</b> ${m.phone?`<span class="phone muted small">${esc(m.phone)}</span>`:''}<div class="linked">${m.loginUid?`حساب الدخول: <b dir="ltr">${esc(m.loginEmail||'')}</b>`:'لا يوجد حساب دخول'}</div></div>
+    <span class="chip">${ps.length} مروج</span>${lead?`<button class="btn sm" data-act="linkMgr" data-id="${m.id}">${m.loginUid?'إدارة الحساب':'إنشاء حساب دخول'}</button><button class="btn sm" data-act="editMgr" data-id="${m.id}">تعديل</button><button class="btn sm" data-act="newProm" data-mgr="${m.id}">+ مروج</button>`:''}</div>
+    ${ps.length?`<div class="tbl-wrap"><table><thead><tr><th>المروج</th><th>المنطقة</th><th>الهاتف</th><th>تارگت يومي / أسبوعي / شهري</th><th>هذا الأسبوع</th>${lead?'<th></th>':''}</tr></thead><tbody>${ps.map(p=>{const t=tg(p);return`<tr><td><b>${esc(p.name)}</b></td><td>${regChip(p.region)}</td><td><span class="phone">${esc(p.phone||'—')}</span></td><td class="num">${t.daily} / ${t.weekly} / ${t.monthly}${p.targets&&(p.targets.daily||p.targets.weekly||p.targets.monthly)?' <span class="chip">مخصص</span>':''}</td><td class="num">${cW[p.id]?.n||0} تسجيل</td>${lead?`<td><button class="btn sm ghost" data-act="editProm" data-id="${p.id}">تعديل</button></td>`:''}</tr>`}).join('')}</tbody></table></div>`:`<p class="muted small" style="padding:12px 16px;margin:0">لا يوجد مروجون تحت هذا المدير.</p>`}</section>`}
+  return h}
+
+/* ================= BUDGET ================= */
+function pageBudget(){
+  const m=S.ui.budMonth,b=budgetMonth(m),weeks=monthWeeks(m);const k=m.slice(0,7);
+  const allocSum=sum(weeks,w=>+b.alloc[w]||0);
+  let h=`<div class="page-h"><div><h1>الميزانية والعروض</h1><p>كل عرض تثبّته يُخصم من ميزانية الشهر ويضاف لمستحقات المروج في أسبوعه</p></div><div class="spacer"></div>
+  <div class="weeknav"><button class="icon-btn" data-act="bm" data-d="-1" aria-label="الشهر السابق">›</button><div class="lbl">${monthName(m)}</div><button class="icon-btn" data-act="bm" data-d="1" aria-label="الشهر التالي">‹</button></div>
+  <button class="btn" data-act="editBudget">تعديل الميزانية</button><button class="btn gold" data-act="newBonus">تثبيت عرض</button></div>`;
+  const usedPct=b.total?b.used/b.total*100:0;
+  h+=`<div class="grid g4">${kpi('ميزانية الشهر',money(b.total)+' <small>د.ع</small>',b.total?'':'لم تُحدد بعد')}${kpi('المصروف على العروض',money(b.used)+' <small>د.ع</small>',`${pc(usedPct)}% من الميزانية`,'money')}${kpi('المتبقي',money(b.left)+' <small>د.ع</small>',b.left<0?'تجاوز الميزانية':'',b.left<0?'':'money')}${kpi('غير موزع على الأسابيع',money(b.total-allocSum)+' <small>د.ع</small>','احتياطي الشهر')}</div>`;
+  h+=`<section class="panel"><div class="panel-h"><h2>توزيع الميزانية على الأسابيع</h2><p>الأسبوع من السبت إلى الجمعة</p></div>`;
+  h+=weeks.map(w=>{const a=+b.alloc[w]||0;const u=sum(S.bonuses.filter(x=>x.month===k&&x.weekStart===w),x=>+x.amount||0);const p=a?u/a*100:(u?100:0);
+    return`<div class="wk"><div><b>${fmtD(w)} – ${fmtD(addDays(w,6))}</b><div class="hint">الاستلام ${fmtDay(payDay(w))}</div></div><div class="track-col"><div class="track"><i class="${p>100?'low':p>80?'mid':'good'}" style="width:${Math.min(100,p)}%"></i></div></div><div class="num small">${money(u)} / ${money(a)}</div></div>`}).join('');
+  h+=`</section>`;
+  // tiers + eligible
+  const ws=weekStart(T0),we=addDays(ws,6);const cW=countsRange(ws,we)||{};const basisLbl=S.settings.tierBasis==='trip3'?'سيارة بـ3 رحلات':'سيارة مسجلة';
+  const elig=S.promoters.map(p=>{const c=cW[p.id]||{n:0,n3:0};const v=S.settings.tierBasis==='trip3'?c.n3:c.n;const t=bestTier(v);const got=S.bonuses.filter(x=>x.promoterId===p.id&&x.weekStart===ws);return{p,v,t,got}}).filter(x=>x.t).sort((a,b)=>b.v-a.v);
+  h+=`<div class="grid g2"><section class="panel"><div class="panel-h"><h2>شرائح العروض</h2><p>حسب عدد ${basisLbl}</p></div><div class="tiers">${S.settings.tiers.slice().sort((a,b)=>a.cars-b.cars).map(t=>`<div class="tier">${t.cars} سيارات · <b class="num">${money(t.amount)}</b></div>`).join('')}</div></section>
+  <section class="panel"><div class="panel-h"><h2>مؤهلون هذا الأسبوع</h2><p>${fmtD(ws)} – ${fmtD(we)}</p></div>${elig.length?elig.map(x=>`<div class="wk"><div><b>${esc(x.p.name)}</b><div class="hint">${x.v} ${basisLbl} · ${esc(x.p.region||'')}</div></div><div class="small">${x.got.length?`<span class="st trip3">ثُبّت ${money(sum(x.got,g=>+g.amount||0))}</span>`:`شريحة ${x.t.cars}: <b class="num">${money(x.t.amount)}</b>`}</div><div><button class="btn sm ${x.got.length?'':'gold'}" data-act="newBonus" data-pid="${x.p.id}">${x.got.length?'عرض آخر':'تثبيت'}</button></div></div>`).join(''):'<p class="muted small">لا يوجد مروج وصل لأول شريحة هذا الأسبوع.</p>'}</section></div>`;
+  // history
+  const hist=S.bonuses.filter(x=>x.month===k).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+  h+=`<section class="panel"><div class="panel-h"><h2>سجل العروض المثبتة · ${monthName(m)}</h2></div>${hist.length?`<div class="tbl-wrap"><table><thead><tr><th>المروج</th><th>الفترة</th><th>السيارات</th><th>المبلغ</th><th>أسبوع الاستلام</th><th>ملاحظة</th><th></th></tr></thead><tbody>${hist.map(x=>`<tr><td><b>${esc(promById(x.promoterId)?.name||'محذوف')}</b></td><td>${rangeLabel(x.from,x.to)}</td><td>${x.cars}</td><td class="num"><b>${money(x.amount)}</b></td><td>${fmtDay(payDay(x.weekStart))}</td><td class="wrap">${esc(x.note||'')}</td><td><button class="btn sm ghost danger" data-act="delBonus" data-id="${x.id}">إلغاء</button></td></tr>`).join('')}</tbody></table></div>`:'<p class="muted small">لم يُثبَّت أي عرض في هذا الشهر.</p>'}</section>`;
+  return h}
+
+/* ================= LEADERBOARD ================= */
+function computeBoard(k){
+  const[from,to]=periodRange(k);const per=countsRange(from,to);const P=S.promoters;
+  const fin=financeRange(P.map(p=>p.id),from,to);if(!per||!fin)return null;
+  const rows=P.map(p=>{const c=per[p.id]||{n:0,n1:0,n3:0};const t=targetFor(p,from,to);return{p,n:c.n,n3:c.n3,ratio:c.n?c.n3/c.n*100:0,earn:fin.per[p.id]?.total||0,pct:t?c.n/t*100:0,t}});
+  return{from,to,rows}}
+function boardData(){
+  let d;
+  if(role()==='leader')d=computeBoard(S.ui.lbPeriod);
+  else{const b=S.boards&&S.boards.periods&&S.boards.periods[S.ui.lbPeriod];if(!b)return{empty:true};
+    d={from:b.from,to:b.to,rows:b.rows.map(r=>({...r,p:promById(r.pid)})).filter(r=>r.p).map(r=>({...r,ratio:r.n?r.n3/r.n*100:0,pct:r.t?r.n/r.t*100:0}))}}
+  if(!d)return null;const{from,to,rows}=d;
+  const mrows=S.managers.map(m=>{const rs=rows.filter(r=>r.p.managerId===m.id);const n=sum(rs,r=>r.n),n3=sum(rs,r=>r.n3),t=sum(rs,r=>r.t);return{m,n,n3,ratio:n?n3/n*100:0,earn:sum(rs,r=>r.earn),pct:t?n/t*100:0,cnt:rs.length}});
+  return{from,to,rows,mrows}}
+const METRICS={regs:['التسجيلات',r=>r.n,v=>v],trip3:['3 رحلات',r=>r.n3,v=>v],pct:['تحقيق التارگت',r=>r.pct,v=>pc(v)+'%'],earn:['المستحقات',r=>r.earn,v=>money(v)]};
+function pageBoard(){
+  let h=`<div class="page-h"><div><h1>المتصدرون</h1><p>ترتيب المروجين ومدراء المبيعات في صلاح الدين</p></div></div>
+  <div class="filters"><div class="pills">${Object.entries(PERIODS).map(([k,v])=>`<button class="pill ${S.ui.lbPeriod===k?'on':''}" data-act="lbP" data-v="${k}">${v}</button>`).join('')}</div><div class="spacer"></div><div class="pills">${Object.entries(METRICS).map(([k,v])=>`<button class="pill ${S.ui.lbMetric===k?'on':''}" data-act="lbM" data-v="${k}">${v[0]}</button>`).join('')}</div></div>`;
+  if(!S.promoters.length)return h+`<div class="panel empty"><h2>لا يوجد مروجون بعد</h2></div>`;
+  const d=boardData();if(!d)return h+loadingBox();
+  if(d.empty)return h+`<div class="panel empty"><h2>لم يُحدَّث الترتيب بعد</h2><p>يُحدَّث تلقائياً عند فتح الستي ليدر للنظام أو تعديل أي تسجيل.</p></div>`;
+  if(role()!=='leader'&&S.boards?.updatedAt){const u=new Date(S.boards.updatedAt);h+=`<p class="hint" style="margin:0">آخر تحديث ${fmtDay(toStr(u))} ${pad(u.getHours())}:${pad(u.getMinutes())}</p>`}
+  const[lab,get,fmt]=METRICS[S.ui.lbMetric];
+  const rows=d.rows.slice().sort((a,b)=>get(b)-get(a)||b.n-a.n);const max=Math.max(1,...rows.map(get));
+  const mine=scopeMgr();
+  h+=`<p class="muted small" style="margin:0">${rangeLabel(d.from,d.to)}</p>`;
+  h+=`<div class="podium">${rows.slice(0,3).map((r,i)=>`<div class="pod p${i+1}"><span class="rank">${i+1}</span><b>${esc(r.p.name)}</b><span class="small muted">${esc(mgrById(r.p.managerId)?.name||'')} · ${esc(r.p.region||'')}</span><span class="big num">${fmt(get(r))}</span><span class="small muted">${lab}</span></div>`).join('')}</div>`;
+  h+=`<div class="grid g2"><section class="panel"><div class="panel-h"><h2>المروجون</h2></div>${rows.map((r,i)=>`<div class="rankrow" ${mine&&r.p.managerId===mine?'style="background:var(--accent-soft);border-radius:8px"':''}><span class="n">${i+1}</span><div class="nm"><b>${esc(r.p.name)}</b><span>${r.n} تسجيل · ${r.n3} بـ3 رحلات · ${pc(r.pct)}% تارگت</span></div><div class="barcol"><div class="track"><i style="width:${get(r)/max*100}%"></i></div></div><span class="v num">${fmt(get(r))}</span></div>`).join('')}</section>`;
+  const mr=d.mrows.slice().sort((a,b)=>get(b)-get(a));const mm=Math.max(1,...mr.map(get));
+  h+=`<section class="panel"><div class="panel-h"><h2>مدراء المبيعات</h2></div>${mr.map((r,i)=>`<div class="rankrow" ${mine===r.m.id?'style="background:var(--accent-soft);border-radius:8px"':''}><span class="n">${i+1}</span><div class="nm"><b>${esc(r.m.name)}</b><span>${r.cnt} مروج · ${r.n} تسجيل · ${pc(r.ratio)}% بـ3 رحلات</span></div><div class="barcol"><div class="track"><i class="mid" style="width:${get(r)/mm*100}%"></i></div></div><span class="v num">${fmt(get(r))}</span></div>`).join('')}</section></div>`;
+  return h}
+
+/* ================= EXPORT ================= */
+function pageExport(){
+  const e=S.ui.exp,c=S.ui.csv;const lockMgr=!!scopeMgr();
+  const scopeSel=(o,pfx)=>`<div class="fld"><label for="${pfx}sc">النطاق</label><select id="${pfx}sc" data-bind="${pfx}.scope"><option value="all" ${o.scope==='all'?'selected':''}>${lockMgr?'كل فريقي':'الوضع العام (الكل)'}</option>${lockMgr?'':`<option value="manager" ${o.scope==='manager'?'selected':''}>مدير مبيعات</option>`}<option value="promoter" ${o.scope==='promoter'?'selected':''}>مروج محدد</option></select></div>
+    ${o.scope==='manager'&&!lockMgr?`<div class="fld"><label for="${pfx}mg">المدير</label><select id="${pfx}mg" data-bind="${pfx}.manager">${mgrOptions(o.manager,true,'اختر المدير')}</select></div>`:''}
+    ${o.scope==='promoter'?`<div class="fld"><label for="${pfx}pr">المروج</label><select id="${pfx}pr" data-bind="${pfx}.promoter">${promOptions(o.promoter,true,'اختر المروج')}</select></div>`:''}
+    <div class="fld"><label for="${pfx}rg">المنطقة</label><select id="${pfx}rg" data-bind="${pfx}.region">${regOptions(o.region,true)}</select></div>`;
+  let h=`<div class="page-h"><div><h1>التصدير</h1><p>${lockMgr?'القوائم والتقارير الخاصة بفريقك فقط':'أوراق مبيعات PNG وقوائم السواق'}</p></div></div>`;
+  h+=`<section class="panel"><div class="panel-h"><h2>ورقة مبيعات PNG</h2><p>ملخص جاهز للمشاركة على واتساب أو المجموعات</p></div>
+  <div class="filters">${scopeSel(e,'exp')}<div class="fld"><label for="expp">الفترة</label><select id="expp" data-bind="exp.period">${Object.entries({...PERIODS,today:'اليوم',custom:'فترة مخصصة'}).map(([k,v])=>`<option value="${k}" ${e.period===k?'selected':''}>${v}</option>`).join('')}</select></div>
+  ${e.period==='custom'?`<div class="fld"><label for="expf">من</label><input type="date" id="expf" data-bind="exp.from" value="${e.from}"></div><div class="fld"><label for="expt">إلى</label><input type="date" id="expt" data-bind="exp.to" value="${e.to}"></div>`:''}
+  <div class="spacer"></div><button class="btn pri" data-act="savePng">تنزيل PNG</button></div>
+  <div class="sheet-prev" style="margin-top:14px"><canvas id="sheetCanvas" aria-label="معاينة ورقة المبيعات"></canvas></div></section>`;
+  h+=`<section class="panel"><div class="panel-h"><h2>قائمة السواق والهواتف</h2><p>حسب الحالة وتاريخ التسجيل</p></div>
+  <div class="filters">${scopeSel(c,'csv')}<div class="fld"><label for="csvf">من</label><input type="date" id="csvf" data-bind="csv.from" value="${c.from}"></div><div class="fld"><label for="csvt">إلى</label><input type="date" id="csvt" data-bind="csv.to" value="${c.to}"></div></div>
+  <div class="checks" style="margin-top:12px">${Object.entries(STATUS).map(([k,v])=>`<label><input type="checkbox" data-act-change="csvSt" value="${k}" ${c.statuses.includes(k)?'checked':''}> ${v}</label>`).join('')}<label><input type="checkbox" id="csvz" data-act-change="csvZero" ${c.zero?'checked':''}> حماية الصفر بأول الرقم في Excel</label></div>`;
+  const rows=csvRows();
+  h+=rows?`<div class="filters" style="margin-top:14px"><span class="chip">${rows.length} سائق</span><div class="spacer"></div><button class="btn" data-act="copyList">نسخ الأسماء والأرقام</button><button class="btn pri" data-act="saveCsv" ${rows.length?'':'disabled'}>تنزيل CSV</button></div>
+  ${rows.length?`<div class="tbl-wrap" style="margin-top:12px;max-height:340px"><table><thead><tr><th>الاسم</th><th>الهاتف</th><th>الحالة</th><th>التسجيل</th><th>المروج</th><th>المنطقة</th></tr></thead><tbody>${rows.slice(0,50).map(r=>`<tr><td>${esc(r.c.name)}</td><td><span class="phone">${esc(r.c.phone)}</span></td><td>${stChip(r.c.status)}</td><td>${fmtD(r.c.regDate)}</td><td>${esc(r.p?.name||'')}</td><td>${esc(r.p?.region||'')}</td></tr>`).join('')}</tbody></table></div>${rows.length>50?`<p class="hint">تُعرض أول 50، والملف يحتوي الكل.</p>`:''}`:''}`:loadingBox();
+  return h+`</section>`}
+function scopePids(o){let P=visPromoters();if(o.region)P=P.filter(p=>p.region===o.region);
+  if(o.scope==='promoter')P=o.promoter?P.filter(p=>p.id===o.promoter):[];else if(o.scope==='manager'&&!scopeMgr())P=o.manager?P.filter(p=>p.managerId===o.manager):[];return P}
+function scopeTitle(o){if(o.scope==='promoter'&&o.promoter)return'المروج: '+(promById(o.promoter)?.name||'');if(o.scope==='manager'&&o.manager&&!scopeMgr())return'فريق '+(mgrById(o.manager)?.name||'');if(scopeMgr())return'فريق '+(mgrById(scopeMgr())?.name||'');return'الوضع العام · كل الفرق'}
+function csvRows(){const c=S.ui.csv;const caps=capsIn(c.from,c.to);if(!caps)return null;const ids=new Set(scopePids(c).map(p=>p.id));
+  return caps.filter(x=>ids.has(x.promoterId)&&c.statuses.includes(x.status)).sort((a,b)=>a.regDate.localeCompare(b.regDate)).map(x=>{const p=promById(x.promoterId);return{c:x,p,m:p&&mgrById(p.managerId)}})}
+function csvText(rows,zero){const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const head=['الاسم','الهاتف','الحالة','تاريخ التسجيل','المروج','مدير المبيعات','المنطقة'];
+  return'﻿'+[head.map(q).join(','),...rows.map(r=>[q(r.c.name),zero?'="'+r.c.phone+'"':q(r.c.phone),q(STATUS[r.c.status]),q(r.c.regDate),q(r.p?.name),q(r.m?.name),q(r.p?.region)].join(','))].join('\r\n')}
+async function saveFile(filename,data){
+  const blob=data instanceof Blob?data:new Blob([data],{type:filename.endsWith('.csv')?'text/csv;charset=utf-8':'application/octet-stream'});
+  // على الموبايل: مشاركة مباشرة (واتساب...) إن توفرت
+  try{const file=new File([blob],filename,{type:blob.type});if(navigator.canShare&&navigator.canShare({files:[file]})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){await navigator.share({files:[file],title:filename});return}}catch(e){if(e&&e.name==='AbortError')return}
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);toast('تم التنزيل')}
+
+/* ---------- PNG sheet (canvas, RTL) ---------- */
+function sheetData(){
+  const e=S.ui.exp;const[from,to]=e.period==='custom'?[e.from<=e.to?e.from:e.to,e.from<=e.to?e.to:e.from]:periodRange(e.period);
+  const P=scopePids(e);const per=countsRange(from,to);const fin=financeRange(P.map(p=>p.id),from,to);if(!per||!fin)return null;
+  const a=agg(per,P.map(p=>p.id));const t=sum(P,p=>targetFor(p,from,to));
+  const rows=P.map(p=>{const c=per[p.id]||{n:0,n1:0,n3:0};const tt=targetFor(p,from,to);return{p,...c,ratio:c.n?c.n3/c.n*100:0,pct:tt?c.n/tt*100:0,t:tt,earn:fin.per[p.id]?.total||0}}).sort((x,y)=>y.n-x.n);
+  const regions=REGIONS.map(r=>{const ids=P.filter(p=>p.region===r).map(p=>p.id);return{r,cnt:ids.length,...agg(per,ids)}}).filter(x=>x.cnt);
+  const mgrs=(e.scope==='all'&&!scopeMgr())?S.managers.map(m=>{const rs=rows.filter(r=>r.p.managerId===m.id);const n=sum(rs,r=>r.n),n3=sum(rs,r=>r.n3),tt=sum(rs,r=>r.t);return{name:m.name,cnt:rs.length,n,n3,ratio:n?n3/n*100:0,pct:tt?n/tt*100:0,earn:sum(rs,r=>r.earn)}}).filter(x=>x.cnt).sort((a,b)=>b.n-a.n):[];
+  let caps=[];if(e.scope==='promoter'&&P.length)caps=(capsIn(from,to)||[]).filter(c=>c.promoterId===P[0].id).sort((x,y)=>x.regDate.localeCompare(y.regDate));
+  const isWeek=from===weekStart(from)&&to===addDays(from,6);
+  const bud=(e.scope==='all'&&!scopeMgr()&&!e.region)?budgetMonth(from):null;
+  return{from,to,P,a,t,fin,rows,regions,mgrs,caps,isWeek,bud,title:scopeTitle(e)}}
+let drawToken=0;
+async function drawPreview(){const cv=$('#sheetCanvas');if(!cv)return;const my=++drawToken;
+  try{await Promise.all([document.fonts.load('700 30px "Readex Pro"'),document.fonts.load('600 18px "IBM Plex Sans Arabic"'),document.fonts.load('400 18px "IBM Plex Sans Arabic"')])}catch(e){}
+  if(my!==drawToken)return;const d=sheetData();if(!d)return;drawSheet(cv,d)}
+function drawSheet(cv,d){
+  const W=1200,PAD=56,DPR=2;const C={bg:'#f4f7f6',card:'#ffffff',ink:'#13211d',muted:'#5a6a65',line:'#d9e2de',acc:'#0d6955',accSoft:'#d5ebe4',gold:'#b87a05',goldSoft:'#faedcf',good:'#1e8a4b',bad:'#c03a2d',zebra:'#f7faf9'};
+  const FD='"Readex Pro","IBM Plex Sans Arabic",sans-serif',FB='"IBM Plex Sans Arabic",sans-serif';
+  const promoterMode=d.caps.length||S.ui.exp.scope==='promoter';
+  const tblRows=promoterMode?d.caps.length:d.rows.length;
+  let H=180+30+ (2*112+16) + 30 + (d.regions.length>1&&!promoterMode?120:0) + (d.mgrs.length?60+44+d.mgrs.length*42+30:0) + 122+Math.max(1,tblRows)*42 + 110;
+  cv.width=W*DPR;cv.height=H*DPR;const x=cv.getContext('2d');x.setTransform(DPR,0,0,DPR,0,0);x.direction='rtl';
+  const rr=(X,Y,w,h,r,fill,stroke)=>{x.beginPath();x.roundRect?x.roundRect(X,Y,w,h,r):x.rect(X,Y,w,h);if(fill){x.fillStyle=fill;x.fill()}if(stroke){x.strokeStyle=stroke;x.lineWidth=1;x.stroke()}};
+  const tx=(s,X,Y,font,color,align='right')=>{x.font=font;x.fillStyle=color;x.textAlign=align;x.fillText(String(s),X,Y)};
+  const fit=(s,maxW,font)=>{x.font=font;s=String(s??'');if(x.measureText(s).width<=maxW)return s;while(s.length>1&&x.measureText(s+'…').width>maxW)s=s.slice(0,-1);return s+'…'};
+  x.fillStyle=C.bg;x.fillRect(0,0,W,H);
+  // header
+  x.fillStyle=C.acc;x.fillRect(0,0,W,180);
+  rr(W-PAD-64,40,64,64,14,'#ffffff');tx('بلي',W-PAD-32,82,`700 22px ${FD}`,C.acc,'center');
+  tx('ورقة مبيعات · ستي ليدر صلاح الدين',W-PAD-84,68,`700 30px ${FD}`,'#ffffff');
+  tx(d.title,W-PAD-84,104,`500 20px ${FB}`,'#d5ebe4');
+  tx(rangeLabel(d.from,d.to),PAD,68,`600 22px ${FD}`,'#ffffff','left');
+  tx(d.isWeek?'الاستلام: '+fmtDay(payDay(d.from)):'',PAD,102,`500 18px ${FB}`,'#d5ebe4','left');
+  tx('نمط الحساب: السبت – الجمعة · الاستلام الثلاثاء من الأسبوع التالي',W-PAD,150,`400 16px ${FB}`,'#b8ddd2');
+  let y=210;
+  // KPIs
+  const a=d.a,f=d.fin;const k=[
+    ['التسجيلات',a.n,'التارگت '+d.t],['تحقيق التارگت',pc(d.t?a.n/d.t*100:0)+'%',''],['خرج بـ3 رحلات',a.n3,pc(a.ratio)+'% من السيارات'],['خرج برحلة واحدة',a.n1,'تسجيل فقط: '+(a.n-a.n1-a.n3)],
+    ['أرباح التسجيل',money(f.base),'د.ع'],['عروض الستي ليدر',money(f.bonus),'د.ع'],['إجمالي المستحق',money(f.total),'د.ع'],d.bud?['متبقي ميزانية الشهر',money(d.bud.left),'من '+money(d.bud.total)]:['عدد المروجين',d.P.length,'']];
+  const cw=(W-2*PAD-3*16)/4;
+  k.forEach((it,i)=>{const col=i%4,row=Math.floor(i/4);const X=W-PAD-(col+1)*cw-col*16,Y=y+row*(112+16);const money_=i>=4&&i<7;
+    rr(X,Y,cw,112,14,money_?C.goldSoft:C.card,money_?null:C.line);
+    tx(it[0],X+cw-18,Y+32,`600 16px ${FB}`,C.muted);tx(it[1],X+cw-18,Y+76,`700 34px ${FD}`,money_?C.gold:C.ink);tx(it[2],X+18,Y+76,`500 15px ${FB}`,C.muted,'left')});
+  y+=2*112+16+30;
+  // regions
+  if(d.regions.length>1&&!promoterMode){const rw=(W-2*PAD-16)/2;d.regions.forEach((r,i)=>{const X=W-PAD-(i+1)*rw-i*16;rr(X,y,rw,92,14,C.card,C.line);
+    tx(r.r,X+rw-20,y+38,`700 22px ${FD}`,C.acc);tx(`${r.cnt} مروج`,X+rw-20,y+70,`500 15px ${FB}`,C.muted);
+    tx(`${r.n} تسجيل · ${r.n3} بـ3 رحلات · ${pc(r.ratio)}%`,X+20,y+54,`600 18px ${FB}`,C.ink,'left')});y+=120}
+  const table=(title,cols,data)=>{tx(title,W-PAD,y+30,`700 22px ${FD}`,C.ink);y+=48;
+    rr(PAD,y,W-2*PAD,44,10,C.accSoft);let cx=W-PAD-16;cols.forEach(c=>{tx(c[0],c[2]==='left'?cx-c[1]+8:cx,y+28,`600 15px ${FB}`,C.acc,c[2]==='left'?'left':'right');cx-=c[1]});y+=44;
+    if(!data.length){tx('لا توجد بيانات في هذه الفترة',W-PAD-16,y+28,`400 16px ${FB}`,C.muted);y+=42}
+    data.forEach((r,i)=>{if(i%2)rr(PAD,y,W-2*PAD,42,0,C.zebra);let cx=W-PAD-16;cols.forEach((c,j)=>{const font=j===1?`600 17px ${FB}`:`400 16px ${FB}`;const v=fit(r[j],c[1]-14,font);tx(v,c[2]==='left'?cx-c[1]+8:cx,y+27,font,r.colors?.[j]||C.ink,c[2]==='left'?'left':'right');cx-=c[1]});
+      x.strokeStyle=C.line;x.beginPath();x.moveTo(PAD,y+42);x.lineTo(W-PAD,y+42);x.stroke();y+=42});y+=30};
+  if(d.mgrs.length)table('مدراء المبيعات',[['#',50],['المدير',300],['المروجون',120],['التسجيل',130],['3 رحلات',150],['التحقيق',130],['المستحق',208,'left']],
+    d.mgrs.map((m,i)=>[i+1,m.name,m.cnt,m.n,`${m.n3} (${pc(m.ratio)}%)`,pc(m.pct)+'%',money(m.earn)]));
+  if(promoterMode){const p=d.P[0];table('كباتن '+(p?.name||''),[['#',50],['الكابتن',380],['تاريخ التسجيل',230],['الحالة',200],['',228,'left']],
+    d.caps.map((c,i)=>{const r=[i+1,c.name,fmtDay(c.regDate),STATUS[c.status],''];r.colors={3:c.status==='trip3'?C.good:c.status==='trip1'?'#2d6bc0':C.muted};return r}))}
+  else table('المروجون',[['#',50],['المروج',250],['المدير',190],['المنطقة',110],['التسجيل',110],['3 رحلات',130],['التحقيق',100],['المستحق',148,'left']],
+    d.rows.map((r,i)=>{const o=[i+1,r.p.name,mgrById(r.p.managerId)?.name||'',r.p.region||'',`${r.n}/${r.t}`,`${r.n3} (${pc(r.ratio)}%)`,pc(r.pct)+'%',money(r.earn)];o.colors={6:r.pct>=100?C.good:r.pct<60?C.bad:C.gold};return o}));
+  x.strokeStyle=C.line;x.beginPath();x.moveTo(PAD,H-70);x.lineTo(W-PAD,H-70);x.stroke();
+  const now=new Date();tx(`صدر في ${fmtDay(toStr(now))} ${pad(now.getHours())}:${pad(now.getMinutes())}`,W-PAD,H-36,`400 15px ${FB}`,C.muted);
+  tx('ستي ليدر صلاح الدين · سامراء وتكريت',PAD,H-36,`600 15px ${FB}`,C.acc,'left')}
+
+/* ================= SETTINGS ================= */
+function pageSettings(){const s=S.settings,R=s.rates;const demo=S.managers.some(m=>m.demo)||S.promoters.some(p=>p.demo);
+  return`<div class="page-h"><div><h1>الإعدادات</h1><p>قيم الحساب والتارگت والعروض</p></div><div class="spacer"></div><button class="btn pri" data-act="editSettings">تعديل الإعدادات</button></div>
+  <div class="grid g2"><section class="panel"><div class="panel-h"><h2>حساب المروج لكل سيارة</h2></div>
+  <div class="fin"><div class="fin-row"><span>تسجيل فقط</span><b class="num">${money(R.reg)} د.ع</b></div><div class="fin-row"><span>خرج برحلة واحدة</span><b class="num">${money(R.trip1)} د.ع</b></div><div class="fin-row"><span>خرج بـ3 رحلات</span><b class="num">${money(R.trip3)} د.ع</b></div>
+  <div class="callout good">إذا تجاوزت نسبة السيارات التي حققت 3 رحلات <b>${R.premiumRatio}%</b> من سيارات المروج في الأسبوع، تُحسب كل سياراته ذلك الأسبوع بـ <b>${money(R.premium)} د.ع</b>.</div></div></section>
+  <section class="panel"><div class="panel-h"><h2>التارگت الافتراضي لكل مروج</h2><p>يمكن تخصيصه لكل مروج من صفحة الفريق</p></div>
+  <div class="counts"><div><b>${s.targets.daily}</b><span>يومي</span></div><div><b>${s.targets.weekly}</b><span>أسبوعي</span></div><div><b>${s.targets.monthly}</b><span>شهري</span></div></div></section>
+  <section class="panel"><div class="panel-h"><h2>شرائح عروض الستي ليدر</h2><p>تُحسب على ${s.tierBasis==='trip3'?'السيارات التي خرجت بـ3 رحلات':'كل السيارات المسجلة'}</p></div><div class="tiers">${s.tiers.slice().sort((a,b)=>a.cars-b.cars).map(t=>`<div class="tier">${t.cars} سيارات · <b class="num">${money(t.amount)}</b></div>`).join('')}</div></section>
+  <section class="panel"><div class="panel-h"><h2>بيانات تجريبية</h2><p>لتجربة النظام قبل إدخال الفريق الحقيقي</p></div><div style="display:flex;gap:8px;flex-wrap:wrap">${demo?`<button class="btn danger" data-act="demoClear">حذف البيانات التجريبية</button>`:`<button class="btn" data-act="demoLoad">تحميل بيانات تجريبية</button>`}</div><p class="hint">البيانات التجريبية معلّمة ويمكن حذفها بالكامل دون المساس ببياناتك.</p></section></div>`}
+
+/* ================= modal ================= */
+function openModal(o){S.modal=o;paintModal()}
+function paintModal(){const o=S.modal;const el=$('#modal');if(!o){el.innerHTML='';return}
+  el.innerHTML=`<div class="overlay" data-act="closeBg"><form class="dialog" id="mform" novalidate><div class="dialog-h"><h2>${esc(o.title)}</h2><button type="button" class="icon-btn" data-act="close" aria-label="إغلاق">✕</button></div><div class="dialog-b" id="mbody">${typeof o.body==='function'?o.body():o.body}</div>${o.noSubmit?'':`<div class="dialog-f"><button class="btn pri" type="submit">${o.submit||'حفظ'}</button><button class="btn" type="button" data-act="close">إلغاء</button>${o.extra||''}</div>`}</form></div>`;
+  o.onOpen&&o.onOpen()}
+function closeModal(){S.modal=null;paintModal()}
+const fv=(f,n)=>(f.elements[n]?.value??'').trim();
+
+function capForm(c){c=c||{};return`<div class="form">
+  <div class="fld full"><label for="f_name">اسم الكابتن</label><input id="f_name" name="name" value="${esc(c.name||'')}" required></div>
+  <div class="fld"><label for="f_phone">رقم الهاتف</label><input id="f_phone" name="phone" inputmode="tel" dir="ltr" value="${esc(c.phone||'')}" placeholder="07XXXXXXXXX"></div>
+  <div class="fld"><label for="f_date">تاريخ التسجيل</label><input id="f_date" type="date" name="regDate" value="${c.regDate||T0}"></div>
+  <div class="fld"><label for="f_prom">المروج</label><select id="f_prom" name="promoterId">${promOptions(c.promoterId||S.ui.cap.promoter,false)}</select></div>
+  <div class="fld"><label for="f_st">الحالة</label><select id="f_st" name="status">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${(c.status||'reg')===k?'selected':''}>${v}</option>`).join('')}</select></div>
+  <div class="fld full"><label for="f_notes">ملاحظات (اختياري)</label><input id="f_notes" name="notes" value="${esc(c.notes||'')}" placeholder="نوع السيارة، رقم اللوحة…"></div>
+  <div class="full callout bad" id="f_err" hidden></div></div>`}
+async function phoneTaken(phone,exceptId){const local=S.captains.find(c=>c.phone===phone&&c.id!==exceptId);if(local)return local;
+  try{const s=await col('captains').where('phone','==',phone).limit(2).get();const d=s.docs.find(d=>d.id!==exceptId);return d?{id:d.id,...d.data()}:null}catch(e){return null}}
+function capModal(c){
+  if(!S.promoters.length){toast('أضف مروجاً أولاً من صفحة الفريق','bad');return}
+  openModal({title:c?'تعديل كابتن':'كابتن جديد',body:capForm(c),extra:c?`<div class="spacer"></div><button type="button" class="btn danger" data-act="delCap" data-id="${c.id}">حذف</button>`:'',
+    onSubmit:async f=>{const err=$('#f_err');const name=fv(f,'name'),phone=normPhone(fv(f,'phone'));
+      const show=m=>{err.textContent=m;err.hidden=false;return false};
+      if(!name)return show('اكتب اسم الكابتن');if(!validPhone(phone))return show('رقم الهاتف يجب أن يكون 11 رقماً ويبدأ بـ 07');
+      const tk=await phoneTaken(phone,c?.id);if(tk)return show(`الرقم مسجل مسبقاً باسم ${tk.name} (${promById(tk.promoterId)?.name||''})`);
+      const st=fv(f,'status');const data={name,phone,regDate:fv(f,'regDate')||T0,promoterId:fv(f,'promoterId'),managerId:mgrOfProm(fv(f,'promoterId')),status:st,notes:fv(f,'notes')};
+      if(c){if(c.status!==st)data.statusAt=T0;return W(()=>col('captains').doc(c.id).update(data),'تم الحفظ')}
+      data.statusAt=T0;data.createdAt=new Date().toISOString();return W(()=>col('captains').doc().set(data),'تمت إضافة '+name)}})}
+function bulkModal(){
+  if(!S.promoters.length){toast('أضف مروجاً أولاً','bad');return}
+  openModal({title:'إضافة مجموعة كباتن',submit:'إضافة',body:`<div class="form"><div class="fld"><label for="b_prom">المروج</label><select id="b_prom" name="promoterId">${promOptions('',false)}</select></div><div class="fld"><label for="b_date">تاريخ التسجيل</label><input id="b_date" type="date" name="regDate" value="${T0}"></div>
+    <div class="fld full"><label for="b_txt">سطر لكل كابتن: الاسم ثم الرقم</label><textarea id="b_txt" name="txt" placeholder="علي حسين 07701234567&#10;مصطفى كريم - 07812345678"></textarea><span class="hint">تُرفض الأرقام المكررة أو غير الصحيحة وتظهر لك.</span></div><div class="full callout bad" id="f_err" hidden></div></div>`,
+    onSubmit:async f=>{const lines=fv(f,'txt').split(/\n+/).map(s=>s.trim()).filter(Boolean);const pid=fv(f,'promoterId'),date=fv(f,'regDate')||T0;const bad=[];let ok=0;const seen=new Set();
+      for(const ln of lines){const raw=ln.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));const m=raw.match(/(\+?9640?7\d{9}|07\d{9}|7\d{9})/);const phone=m?normPhone(m[1]):'';const name=raw.replace(m?m[1]:'','').replace(/[-–,:،|]+/g,' ').trim();
+        if(!name||!validPhone(phone)){bad.push(ln+' — صيغة غير صحيحة');continue}if(seen.has(phone)||await phoneTaken(phone)){bad.push(ln+' — رقم مكرر');continue}seen.add(phone);
+        try{await col('captains').doc().set({name,phone,regDate:date,promoterId:pid,managerId:mgrOfProm(pid),status:'reg',statusAt:date,notes:'',createdAt:new Date().toISOString()});ok++}catch(e){bad.push(ln+' — تعذر الحفظ')}}
+      S.hist={};scheduleBoards();toast(`تمت إضافة ${ok} كابتن`);if(bad.length){const e=$('#f_err');e.innerHTML='لم تُضف هذه الأسطر:<br>'+bad.map(esc).join('<br>');e.hidden=false;f.elements.txt.value=bad.map(b=>b.split(' — ')[0]).join('\n');return false}return true}})}
+function mgrModal(m){openModal({title:m?'تعديل مدير مبيعات':'مدير مبيعات جديد',body:`<div class="form"><div class="fld"><label for="m_name">الاسم</label><input id="m_name" name="name" value="${esc(m?.name||'')}"></div><div class="fld"><label for="m_phone">الهاتف</label><input id="m_phone" name="phone" dir="ltr" inputmode="tel" value="${esc(m?.phone||'')}"></div><div class="full callout bad" id="f_err" hidden></div></div>`,
+  extra:m?`<div class="spacer"></div><button type="button" class="btn danger" data-act="delMgr" data-id="${m.id}">حذف</button>`:'',
+  onSubmit:async f=>{const name=fv(f,'name');if(!name){const e=$('#f_err');e.textContent='اكتب الاسم';e.hidden=false;return false}const d={name,phone:normPhone(fv(f,'phone'))};
+    return m?W(()=>col('managers').doc(m.id).update(d),'تم الحفظ'):W(()=>col('managers').doc().set({...d,createdAt:new Date().toISOString()}),'تمت إضافة '+name)}})}
+function promModal(p,mgrId){if(!S.managers.length){toast('أضف مدير مبيعات أولاً','bad');return}const t=p?.targets||{};const D=S.settings.targets;
+  openModal({title:p?'تعديل مروج':'مروج جديد',body:`<div class="form"><div class="fld"><label for="p_name">الاسم</label><input id="p_name" name="name" value="${esc(p?.name||'')}"></div><div class="fld"><label for="p_phone">الهاتف</label><input id="p_phone" name="phone" dir="ltr" inputmode="tel" value="${esc(p?.phone||'')}"></div>
+  <div class="fld"><label for="p_mgr">مدير المبيعات</label><select id="p_mgr" name="managerId">${mgrOptions(p?.managerId||mgrId,false)}</select></div><div class="fld"><label for="p_reg">المنطقة</label><select id="p_reg" name="region">${regOptions(p?.region,false)}</select></div>
+  <div class="fld full"><label>تارگت مخصص (اتركه فارغاً لاستخدام الافتراضي)</label></div>
+  <div class="fld"><label for="p_td">يومي</label><input id="p_td" name="td" inputmode="numeric" value="${t.daily||''}" placeholder="${D.daily}"></div><div class="fld"><label for="p_tw">أسبوعي</label><input id="p_tw" name="tw" inputmode="numeric" value="${t.weekly||''}" placeholder="${D.weekly}"></div>
+  <div class="fld"><label for="p_tm">شهري</label><input id="p_tm" name="tm" inputmode="numeric" value="${t.monthly||''}" placeholder="${D.monthly}"></div><div class="full callout bad" id="f_err" hidden></div></div>`,
+  extra:p?`<div class="spacer"></div><button type="button" class="btn danger" data-act="delProm" data-id="${p.id}">حذف</button>`:'',
+  onSubmit:async f=>{const name=fv(f,'name');if(!name){const e=$('#f_err');e.textContent='اكتب الاسم';e.hidden=false;return false}
+    const n=v=>{const x=parseInt(normPhone(v)||v,10);return x>0?x:0};const d={name,phone:normPhone(fv(f,'phone')),managerId:fv(f,'managerId'),region:fv(f,'region'),targets:{daily:n(fv(f,'td')),weekly:n(fv(f,'tw')),monthly:n(fv(f,'tm'))}};
+    if(p&&p.managerId!==d.managerId)return W(async()=>{await col('promoters').doc(p.id).update(d);
+        for(const c of['captains','bonuses']){const s=await col(c).where('promoterId','==',p.id).get();for(let i=0;i<s.docs.length;i+=400){const b=S.db.batch();s.docs.slice(i,i+400).forEach(x=>b.update(x.ref,{managerId:d.managerId}));await b.commit()}}},'نُقل المروج وكباتنه للمدير الجديد');
+    return p?W(()=>col('promoters').doc(p.id).update(d),'تم الحفظ'):W(()=>col('promoters').doc().set({...d,createdAt:new Date().toISOString()}),'تمت إضافة '+name)}})}
+function linkModal(m){
+  if(m.loginUid){openModal({title:'حساب '+m.name,noSubmit:true,body:`<p style="margin:0">حساب الدخول الحالي: <b dir="ltr">${esc(m.loginEmail||'')}</b></p>
+    <p class="hint" style="margin:0">يمكنك تعيين كلمة مرور جديدة له، أو سحب صلاحيته لإيقاف وصوله فوراً.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-act="mgrReset" data-id="${m.id}">تعيين كلمة مرور جديدة</button><button type="button" class="btn danger" data-act="unlink" data-id="${m.id}">سحب الصلاحية</button></div>`});return}
+  openModal({title:'إنشاء حساب دخول لـ '+m.name,submit:'إنشاء الحساب',body:`<div class="form"><div class="fld full"><label for="a_e">البريد الإلكتروني للمدير</label><input id="a_e" name="email" type="email" dir="ltr" autocomplete="off"></div>
+    <div class="fld full"><label for="a_p">كلمة مرور مؤقتة (6 أحرف على الأقل)</label><input id="a_p" name="password" dir="ltr" autocomplete="new-password" value="${Math.random().toString(36).slice(2,10)}"></div>
+    <div class="full hint">أرسل البريد وكلمة المرور للمدير. يمكنه تغييرها بعد الدخول من زر «كلمة المرور» أعلى الصفحة.</div><div class="full callout bad" id="f_err" hidden></div></div>`,
+    onSubmit:async f=>{const email=fv(f,'email'),pw=fv(f,'password');const e=$('#f_err');const show=t=>{e.textContent=t;e.hidden=false;return false};
+      if(!/^\S+@\S+\.\S+$/.test(email))return show('اكتب بريداً صحيحاً');if(pw.length<6)return show('كلمة المرور قصيرة');
+      let uid;try{uid=(await API.post('/api/users',{email,password:pw,managerId:m.id,name:m.name})).uid}
+      catch(err){return show(err.code==='already-exists'?'هذا البريد مستخدم مسبقاً':err.reason==='email'?'البريد غير صحيح':'تعذر إنشاء الحساب')}
+      return W(()=>col('managers').doc(m.id).update({loginUid:uid,loginEmail:email}),'تم إنشاء حساب '+m.name+' · كلمة المرور: '+pw)}})}
+function bonusModal(pid){
+  const ws=weekStart(T0);const tiers=S.settings.tiers.slice().sort((a,b)=>a.cars-b.cars);
+  openModal({title:'تثبيت عرض لمروج',submit:'تثبيت وخصم من الميزانية',body:`<div class="form"><div class="fld full"><label for="bn_p">المروج</label><select id="bn_p" name="promoterId">${promOptions(pid||'',false)}</select></div>
+  <div class="fld"><label for="bn_f">من</label><input id="bn_f" type="date" name="from" value="${ws}"></div><div class="fld"><label for="bn_t">إلى</label><input id="bn_t" type="date" name="to" value="${T0<addDays(ws,6)?T0:addDays(ws,6)}"></div>
+  <div class="full" id="bn_info"></div>
+  <div class="fld"><label for="bn_tier">الشريحة</label><select id="bn_tier" name="tier"><option value="">مبلغ يدوي</option>${tiers.map(t=>`<option value="${t.cars}">${t.cars} سيارات · ${money(t.amount)}</option>`).join('')}</select></div>
+  <div class="fld"><label for="bn_a">المبلغ (د.ع)</label><input id="bn_a" name="amount" inputmode="numeric"></div>
+  <div class="fld full"><label for="bn_n">ملاحظة</label><input id="bn_n" name="note" placeholder="مثال: عرض نهاية الأسبوع"></div><div class="full callout bad" id="f_err" hidden></div></div>`,
+  onOpen:()=>{const f=$('#mform');const upd=(auto)=>{const p=f.elements.promoterId.value,a=f.elements.from.value,b=f.elements.to.value;const info=$('#bn_info');if(!p||!a||!b){info.innerHTML='';return}
+      const per=countsRange(a<=b?a:b,a<=b?b:a);if(!per){info.innerHTML='<div class="callout info">جارٍ الحساب…</div>';setTimeout(()=>upd(auto),400);return}const c=per[p]||{n:0,n3:0};const v=S.settings.tierBasis==='trip3'?c.n3:c.n;const bt=bestTier(v);
+      const m=b.slice(0,7);const bud=budgetMonth(b);const w=weekStart(b);const alloc=+(bud.alloc[w]||0);const usedW=sum(S.bonuses.filter(x=>x.month===m&&x.weekStart===w),x=>+x.amount||0);
+      const prev=S.bonuses.filter(x=>x.promoterId===p&&x.from<=b&&x.to>=a);
+      info.innerHTML=`<div class="callout ${bt?'good':'warn'}">السيارات في الفترة: <b>${c.n}</b> مسجلة، <b>${c.n3}</b> بـ3 رحلات. ${bt?`مؤهل لشريحة ${bt.cars} سيارات.`:'لم يصل لأول شريحة.'}</div>
+        <div class="callout info" style="margin-top:8px">ميزانية ${monthName(b)} المتبقية: <b>${money(bud.left)}</b> د.ع · مخصص أسبوع ${fmtD(w)}: ${money(usedW)} / ${money(alloc)} · الاستلام ${fmtDay(payDay(w))}</div>
+        ${prev.length?`<div class="callout warn" style="margin-top:8px">يوجد ${prev.length} عرض مثبت لهذا المروج يتداخل مع هذه الفترة (${money(sum(prev,x=>+x.amount||0))} د.ع).</div>`:''}`;
+      if(auto){f.elements.tier.value=bt?String(bt.cars):'';f.elements.amount.value=bt?bt.amount:''}};
+    f.elements.tier.addEventListener('change',()=>{const t=tiers.find(t=>String(t.cars)===f.elements.tier.value);if(t)f.elements.amount.value=t.amount});
+    ['promoterId','from','to'].forEach(n=>f.elements[n].addEventListener('change',()=>upd(true)));upd(true)},
+  onSubmit:async f=>{const e=$('#f_err');const show=m=>{e.textContent=m;e.hidden=false;return false};let a=fv(f,'from'),b=fv(f,'to');if(a>b)[a,b]=[b,a];
+    const p=fv(f,'promoterId'),amount=parseInt(normPhone(fv(f,'amount'))||'0',10);if(!p)return show('اختر المروج');if(!(amount>0))return show('اكتب مبلغ العرض');
+    const bud=budgetMonth(b);if(!bud.total)return show(`حدد ميزانية ${monthName(b)} أولاً من «تعديل الميزانية»`);if(amount>bud.left)return show(`المبلغ أكبر من المتبقي في ميزانية الشهر (${money(bud.left)} د.ع)`);
+    const per=countsRange(a,b)||{};const c=per[p]||{n:0,n3:0};const cars=S.settings.tierBasis==='trip3'?c.n3:c.n;
+    return W(()=>col('bonuses').doc().set({promoterId:p,managerId:mgrOfProm(p),from:a,to:b,cars,amount,tier:+fv(f,'tier')||0,note:fv(f,'note'),weekStart:weekStart(b),month:b.slice(0,7),createdAt:new Date().toISOString()}),`تم تثبيت ${money(amount)} د.ع لـ ${promById(p)?.name||''}`)}})}
+function budgetModal(){const m=S.ui.budMonth,k=m.slice(0,7),b=S.budgets[k]||{},weeks=monthWeeks(m);
+  openModal({title:'ميزانية '+monthName(m),body:`<div class="form"><div class="fld full"><label for="bg_t">ميزانية الشهر الكاملة (د.ع)</label><input id="bg_t" name="total" inputmode="numeric" value="${b.total||''}"></div>
+  <div class="fld full"><label>التوزيع على الأسابيع</label><span class="hint">وزّع حسب خطتك؛ ما لا توزعه يبقى احتياطي الشهر.</span></div>
+  ${weeks.map((w,i)=>`<div class="fld"><label for="bg_w${i}">${fmtD(w)} – ${fmtD(addDays(w,6))}</label><input id="bg_w${i}" name="w_${w}" inputmode="numeric" value="${(b.alloc||{})[w]||''}"></div>`).join('')}
+  <div class="full"><button type="button" class="btn sm" data-act="evenSplit">توزيع متساوٍ</button></div><div class="full callout bad" id="f_err" hidden></div></div>`,
+  onSubmit:async f=>{const n=v=>parseInt(normPhone(v)||'0',10)||0;const total=n(fv(f,'total'));const alloc={};let s=0;weeks.forEach(w=>{const v=n(fv(f,'w_'+w));if(v){alloc[w]=v;s+=v}});
+    if(s>total){const e=$('#f_err');e.textContent=`مجموع الأسابيع (${money(s)}) أكبر من ميزانية الشهر`;e.hidden=false;return false}
+    return W(()=>col('budgets').doc(k).set({total,alloc,updatedAt:new Date().toISOString()}),'تم حفظ الميزانية')}})}
+function settingsModal(){const s=S.settings,R=s.rates;const tierRow=t=>`<div class="tier-row" style="display:flex;gap:8px;align-items:end"><div class="fld"><label>عدد السيارات</label><input name="tc" inputmode="numeric" value="${t.cars}"></div><div class="fld"><label>المبلغ</label><input name="ta" inputmode="numeric" value="${t.amount}"></div><button type="button" class="icon-btn" data-act="rmTier" aria-label="حذف الشريحة">✕</button></div>`;
+  openModal({title:'الإعدادات',body:`<h3>حساب كل سيارة (د.ع)</h3><div class="form"><div class="fld"><label for="s_r">تسجيل فقط</label><input id="s_r" name="reg" inputmode="numeric" value="${R.reg}"></div><div class="fld"><label for="s_1">رحلة واحدة</label><input id="s_1" name="trip1" inputmode="numeric" value="${R.trip1}"></div><div class="fld"><label for="s_3">3 رحلات</label><input id="s_3" name="trip3" inputmode="numeric" value="${R.trip3}"></div><div class="fld"><label for="s_p">السعر المضاعف للسيارة</label><input id="s_p" name="premium" inputmode="numeric" value="${R.premium}"></div><div class="fld"><label for="s_pr">نسبة التفعيل %</label><input id="s_pr" name="premiumRatio" inputmode="numeric" value="${R.premiumRatio}"></div></div>
+  <h3>التارگت الافتراضي</h3><div class="form"><div class="fld"><label for="s_td">يومي</label><input id="s_td" name="td" inputmode="numeric" value="${s.targets.daily}"></div><div class="fld"><label for="s_tw">أسبوعي</label><input id="s_tw" name="tw" inputmode="numeric" value="${s.targets.weekly}"></div><div class="fld"><label for="s_tm">شهري</label><input id="s_tm" name="tm" inputmode="numeric" value="${s.targets.monthly}"></div></div>
+  <h3>شرائح العروض</h3><div class="fld"><label for="s_tb">تُحسب الشريحة على</label><select id="s_tb" name="tierBasis"><option value="reg" ${s.tierBasis==='reg'?'selected':''}>كل السيارات المسجلة</option><option value="trip3" ${s.tierBasis==='trip3'?'selected':''}>السيارات التي خرجت بـ3 رحلات</option></select></div>
+  <div id="tierRows" style="display:flex;flex-direction:column;gap:8px">${s.tiers.slice().sort((a,b)=>a.cars-b.cars).map(tierRow).join('')}</div><button type="button" class="btn sm" data-act="addTier">+ شريحة</button><div class="callout bad" id="f_err" hidden></div>`,
+  onOpen:()=>{S._tierRow=tierRow},
+  onSubmit:async f=>{const n=v=>parseInt(normPhone(v)||'0',10)||0;const tc=[...f.querySelectorAll('[name=tc]')].map(e=>n(e.value)),ta=[...f.querySelectorAll('[name=ta]')].map(e=>n(e.value));
+    const tiers=tc.map((c,i)=>({cars:c,amount:ta[i]})).filter(t=>t.cars>0&&t.amount>0).sort((a,b)=>a.cars-b.cars);
+    const d={rates:{reg:n(fv(f,'reg')),trip1:n(fv(f,'trip1')),trip3:n(fv(f,'trip3')),premium:n(fv(f,'premium')),premiumRatio:n(fv(f,'premiumRatio'))||60},targets:{daily:n(fv(f,'td'))||1,weekly:n(fv(f,'tw'))||1,monthly:n(fv(f,'tm'))||1},tiers,tierBasis:fv(f,'tierBasis')};
+    return W(()=>S.db.doc('settings/main').set(d),'تم حفظ الإعدادات')}})}
+function confirmModal(title,text,label,fn){openModal({title,submit:label,body:`<p style="margin:0">${text}</p>`,onSubmit:fn})}
+
+/* ================= demo data ================= */
+async function demoLoad(){
+  const M=[['أحمد الجبوري','07701112233'],['سارة العبيدي','07801112244']];
+  const P=[['حيدر سامي',0,'تكريت'],['علي فاضل',0,'سامراء'],['مروة خالد',1,'تكريت'],['ياسر محمود',1,'سامراء']];
+  const N=['عمر','حسين','مصطفى','كرار','محمد','زيد','عباس','يوسف','بلال','رامي','سيف','أنس','طه','منتظر','وسام'];const L=['الدوري','الجبوري','السامرائي','التكريتي','العزاوي','الدليمي'];
+  toast('جارٍ تحميل البيانات التجريبية…');const mid=[],pid=[];const now=new Date().toISOString();
+  try{for(const[n,ph]of M){const r=col('managers').doc();await r.set({name:n,phone:ph,demo:true,createdAt:now});mid.push(r.id)}
+    for(const[n,mi,rg]of P){const r=col('promoters').doc();await r.set({name:n,phone:'',managerId:mid[mi],region:rg,targets:{daily:0,weekly:0,monthly:0},demo:true,createdAt:now});pid.push(r.id)}
+    let k=0;const ws=weekStart(T0);for(let d=-13;d<=0;d++){const day=addDays(T0,d);const cnt=(d%3===0?2:1);for(let i=0;i<cnt;i++){const p=pid[(k)%4];const st=day<ws?(k%5<3?'trip3':k%5===3?'trip1':'reg'):(k%3===0?'trip3':k%3===1?'trip1':'reg');
+      await col('captains').doc().set({name:N[k%N.length]+' '+L[k%L.length],phone:'0790'+String(1000000+k*7919).slice(-7),regDate:day,promoterId:p,managerId:mid[P[(k)%4][1]],status:st,statusAt:day,notes:'',demo:true,createdAt:now});k++}}
+    toast('تم تحميل بيانات تجريبية');scheduleBoards()}catch(e){toast('توقف التحميل: '+(e.code||''),'bad')}}
+async function demoClear(){toast('جارٍ الحذف…');try{for(const c of['captains','bonuses','promoters','managers']){const s=await col(c).where('demo','==',true).get();for(const d of s.docs)await col(c).doc(d.id).delete()}S.hist={};scheduleBoards();toast('حُذفت البيانات التجريبية')}catch(e){toast('تعذر الحذف','bad')}}
+
+/* ================= events ================= */
+let toastT;function toast(m,c=''){const t=$('#toast');t.className='toast '+c;t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,3200)}
+function setPath(o,p,v){const k=p.split('.');let x=o;while(k.length>1)x=x[k.shift()];x[k[0]]=v}
+const ACT={
+  go:el=>{S.page=el.dataset.p;try{localStorage.setItem('baly-page',S.page)}catch(e){}window.scrollTo(0,0);render()},
+  close:()=>closeModal(),closeBg:(el,ev)=>{if(ev.target===el)closeModal()},
+  newCap:()=>capModal(),bulkCap:()=>bulkModal(),editCap:el=>capModal(S.captains.find(c=>c.id===el.dataset.id)||Object.values(S.hist).flat().find(c=>c.id===el.dataset.id)),
+  delCap:el=>{const id=el.dataset.id;confirmModal('حذف كابتن','سيُحذف الكابتن ويُعاد حساب مستحقات المروج.','حذف',()=>W(()=>col('captains').doc(id).delete(),'تم الحذف'))},
+  setStatus:async el=>{if(!canWrite())return;const id=el.dataset.id,st=el.dataset.st;const c=S.captains.find(c=>c.id===id)||Object.values(S.hist).flat().find(c=>c.id===id);if(!c||c.status===st)return;
+    await W(()=>col('captains').doc(id).update({status:st,statusAt:T0}),`${c.name}: ${STATUS[st]}`);if(S.modal&&S.modal.live)paintModal()},
+  moreCaps:()=>{S.ui.capLimit+=100;render()},
+  wk:el=>{S.ui.promWeek=addDays(S.ui.promWeek,+el.dataset.d);render()},wkNow:()=>{S.ui.promWeek=weekStart(T0);render()},
+  promDetail:el=>promDetail(el.dataset.id),
+  newMgr:()=>mgrModal(),editMgr:el=>mgrModal(mgrById(el.dataset.id)),linkMgr:el=>linkModal(mgrById(el.dataset.id)),
+  unlink:el=>{const m=mgrById(el.dataset.id);W(async()=>{if(m.loginUid)await API.del('/api/users/'+enc(m.loginUid));await col('managers').doc(m.id).update({loginUid:'',loginEmail:''})},'سُحبت صلاحية '+m.name).then(closeModal)},
+  mgrReset:el=>{const m=mgrById(el.dataset.id);openModal({title:'كلمة مرور جديدة لـ '+m.name,body:`<div class="fld"><label for="np">كلمة المرور الجديدة</label><input id="np" name="pw" dir="ltr" value="${Math.random().toString(36).slice(2,10)}"></div><div class="callout bad" id="f_err" hidden></div>`,
+    onSubmit:async f=>{const pw=fv(f,'pw');if(pw.length<6){const e=$('#f_err');e.textContent='6 أحرف على الأقل';e.hidden=false;return false}
+      try{await API.post('/api/users/'+enc(m.loginUid)+'/password',{password:pw});toast('كلمة المرور الجديدة: '+pw);return true}catch(e){toast('تعذر التغيير','bad');return false}}})},
+  myPw:()=>openModal({title:'تغيير كلمة المرور',body:`<div class="fld"><label for="cp0">كلمة المرور الحالية</label><input id="cp0" name="cur" type="password" dir="ltr" autocomplete="current-password"></div><div class="fld"><label for="cp1">كلمة المرور الجديدة</label><input id="cp1" name="nw" type="password" dir="ltr" autocomplete="new-password"></div><div class="callout bad" id="f_err" hidden></div>`,
+    onSubmit:async f=>{const e=$('#f_err');const show=t=>{e.textContent=t;e.hidden=false;return false};if(fv(f,'nw').length<6)return show('كلمة المرور الجديدة 6 أحرف على الأقل');
+      try{await API.post('/api/me/password',{current:f.elements.cur.value,next:f.elements.nw.value});toast('تم تغيير كلمة المرور');return true}catch(x){return show(x.reason==='bad-current'?'كلمة المرور الحالية غير صحيحة':'تعذر التغيير')}}}),
+  logout:async()=>{try{await API.post('/api/logout')}catch(e){}signedOut()},
+  resetPw:()=>toast('تواصل مع الستي ليدر ليعيّن لك كلمة مرور جديدة'),
+  newProm:el=>promModal(null,el.dataset.mgr),editProm:el=>promModal(promById(el.dataset.id)),
+  delProm:el=>{const id=el.dataset.id;const n=S.captains.filter(c=>c.promoterId===id).length;if(n){toast(`للمروج ${n} كابتن مسجل. انقلهم لمروج آخر قبل الحذف`,'bad');return}confirmModal('حذف مروج','سيُحذف المروج من الفريق.','حذف',()=>W(()=>col('promoters').doc(id).delete(),'تم الحذف'))},
+  bm:el=>{S.ui.budMonth=addMonths(S.ui.budMonth,+el.dataset.d);render()},editBudget:()=>budgetModal(),newBonus:el=>bonusModal(el.dataset.pid),
+  delBonus:el=>{const id=el.dataset.id;const b=S.bonuses.find(x=>x.id===id);confirmModal('إلغاء العرض',`سيُلغى عرض ${money(b?.amount)} د.ع ويعود المبلغ لميزانية الشهر، ويُخصم من مستحقات المروج.`,'إلغاء العرض',()=>W(()=>col('bonuses').doc(id).delete(),'أُلغي العرض'))},
+  evenSplit:()=>{const f=$('#mform');const t=parseInt(normPhone(f.elements.total.value)||'0',10);const ins=[...f.querySelectorAll('[name^="w_"]')];if(!t||!ins.length)return;const each=Math.floor(t/ins.length/1000)*1000;ins.forEach((e,i)=>e.value=i===ins.length-1?t-each*(ins.length-1):each)},
+  addTier:()=>{$('#tierRows').insertAdjacentHTML('beforeend',S._tierRow({cars:'',amount:''}))},rmTier:el=>el.closest('.tier-row').remove(),
+  lbP:el=>{S.ui.lbPeriod=el.dataset.v;render()},lbM:el=>{S.ui.lbMetric=el.dataset.v;render()},
+  editSettings:()=>settingsModal(),
+  demoLoad:()=>demoLoad(),demoClear:()=>confirmModal('حذف البيانات التجريبية','ستُحذف كل السجلات المعلّمة كتجريبية فقط.','حذف',async()=>{demoClear();return true}),
+  savePng:async()=>{const cv=$('#sheetCanvas');const d=sheetData();if(!d){toast('انتظر اكتمال التحميل');return}drawSheet(cv,d);
+    const blob=await new Promise(r=>cv.toBlob(r,'image/png'));const e=S.ui.exp;saveFile(`baly-salahaddin-${e.scope}-${d.from}_${d.to}.png`,blob)},
+  saveCsv:()=>{const rows=csvRows();if(!rows||!rows.length)return;const c=S.ui.csv;saveFile(`baly-drivers-${c.from}_${c.to}.csv`,csvText(rows,c.zero))},
+  copyList:async()=>{const rows=csvRows()||[];const txt=rows.map(r=>`${r.c.name} - ${r.c.phone} - ${STATUS[r.c.status]}`).join('\n');try{await navigator.clipboard.writeText(txt);toast(`نُسخت ${rows.length} أسماء`)}catch(e){openModal({title:'انسخ القائمة',noSubmit:true,body:`<textarea class="fld" style="width:100%;min-height:260px" id="cpy">${esc(txt)}</textarea>`,onOpen:()=>{const t=$('#cpy');t.focus();t.select()}})}}
+};
+document.addEventListener('click',ev=>{const el=ev.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(f){if(el.tagName==='BUTTON'&&el.type!=='submit')ev.preventDefault();f(el,ev)}});
+document.addEventListener('input',ev=>{const el=ev.target;if(el.dataset.bind&&el.tagName==='INPUT'&&el.type!=='date'){setPath(S.ui,el.dataset.bind,el.value);S.ui.capLimit=100;render()}});
+document.addEventListener('change',ev=>{const el=ev.target;
+  if(el.dataset.bind&&(el.tagName==='SELECT'||el.type==='date')){if(el.type==='date'&&!el.value)return;setPath(S.ui,el.dataset.bind,el.value);S.ui.capLimit=100;render();return}
+  const a=el.dataset.actChange;if(a==='viewAs'){S.viewAs=el.value;render()}
+  else if(a==='csvSt'){const s=new Set(S.ui.csv.statuses);el.checked?s.add(el.value):s.delete(el.value);S.ui.csv.statuses=[...s];render()}
+  else if(a==='csvZero'){S.ui.csv.zero=el.checked;render()}});
+document.addEventListener('submit',async ev=>{
+  if(ev.target.id==='loginForm'){ev.preventDefault();const f=ev.target,err=$('#lg_err'),btn=f.querySelector('[type=submit]');btn.disabled=true;err.hidden=true;
+    try{const u=await API.post('/api/login',{email:f.email.value.trim(),password:f.password.value});signedIn(u)}
+    catch(e){err.textContent=e.status===401?'البريد أو كلمة المرور غير صحيحة':e.status===429?'محاولات كثيرة، انتظر 15 دقيقة ثم حاول':'تعذر الدخول، تحقق من الإنترنت';err.hidden=false;btn.disabled=false}return}
+  if(ev.target.id!=='mform')return;ev.preventDefault();const o=S.modal;if(!o||!o.onSubmit)return;const btn=ev.target.querySelector('[type=submit]');if(btn)btn.disabled=true;
+  let r=false;try{r=await o.onSubmit(ev.target)}catch(e){console.error(e)}if(btn)btn.disabled=false;if(r!==false&&S.modal===o)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.modal)closeModal()});
+
+/* ================= boot (Firebase) ================= */
+let UNSUB=[];
+function sub(name,ref,fn){UNSUB.push(ref.onSnapshot(s=>{fn(s);S.loaded[name]=1;render();if(S.modal&&S.modal.live)paintModal()},e=>{console.error(name,e);S.loaded[name]=1;render()}))}
+const rows=s=>s.docs.map(d=>({id:d.id,...d.data()}));
+function stopAll(){UNSUB.forEach(u=>{try{u()}catch(e){}});UNSUB=[];S.loaded={};S.hist={};S.histPending={};S.managers=[];S.promoters=[];S.captains=[];S.bonuses=[];S.budgets={};S.boards=null;S.viewAs='';S.profile=null}
+function startData(){
+  const db=S.db,r=role();
+  sub('settings',db.doc('settings/main'),s=>{const d=s.exists?s.data():{};S.settings={rates:{...DEF.rates,...(d.rates||{})},targets:{...DEF.targets,...(d.targets||{})},tiers:Array.isArray(d.tiers)&&d.tiers.length?d.tiers:DEF.tiers,tierBasis:d.tierBasis||DEF.tierBasis}});
+  sub('managers',db.collection('managers'),s=>{S.managers=rows(s).sort(byName)});
+  sub('promoters',db.collection('promoters'),s=>{S.promoters=rows(s).sort(byName)});
+  sub('captains',capQuery().where('regDate','>=',S.liveFrom),s=>{S.captains=rows(s);S.hist={}});
+  sub('bonuses',r==='manager'?db.collection('bonuses').where('managerId','==',S.myManagerId):db.collection('bonuses'),s=>{S.bonuses=rows(s)});
+  sub('boards',db.doc('boards/current'),s=>{S.boards=s.exists?s.data():null});
+  if(r==='leader'){sub('budgets',db.collection('budgets'),s=>{S.budgets={};s.docs.forEach(d=>S.budgets[d.id]=d.data())});
+    // تحديث لوحة المتصدرين عند الفتح بعد اكتمال التحميل
+    const wait=setInterval(()=>{if(S.loaded.captains&&S.loaded.promoters&&S.loaded.bonuses&&S.loaded.settings){clearInterval(wait);scheduleBoards()}},500)}}
+function signedIn(u){stopAll();S.uid=u.uid;S.email=u.email;S.profile=u;S.canEdit=u.role==='leader';S.status='ok';startData();LIVE.connect();render()}
+function signedOut(){stopAll();LIVE.close();S.status='login';S.uid=null;closeModal();render()}
+window.onUnauth=()=>{if(S.status==='ok'){signedOut();toast('انتهت الجلسة، سجّل الدخول مرة أخرى','bad')}};
+async function boot(){S.db=DB;try{signedIn(await API.get('/api/me'))}catch(e){S.status='login';render()}}
+render();boot();
+</script>
+</body>
+</html>
